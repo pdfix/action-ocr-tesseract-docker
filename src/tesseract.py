@@ -1,6 +1,8 @@
 import copy
 import tempfile
 
+from tqdm import tqdm
+
 import pytesseract
 from pdfixsdk.Pdfix import (
     GetPdfix,
@@ -94,7 +96,7 @@ def render_pages(page: PdfPage, pdfix: Pdfix):
 
 def ocr(input_path: str, output_path: str):
     # List of available languages
-    print(pytesseract.get_languages(config=""))
+    print("Available config files: {}".format(pytesseract.get_languages(config="")))
 
     pdfix = GetPdfix()
     if pdfix is None:
@@ -110,8 +112,11 @@ def ocr(input_path: str, output_path: str):
 
     doc_num_pages = doc.GetNumPages()
 
-    new_pages: list[PdfPage] = []
-    for i in range(0, doc_num_pages):
+    out_pdf_doc = pdfix.CreateDoc()
+    if out_pdf_doc is None:
+        raise Exception("Failed to create new pdf: " + str(pdfix.GetError()))
+
+    for i in tqdm(range(0, doc_num_pages), desc="Processing pages"):
         page = doc.AcquirePage(i)
         if page is None:
             raise PdfixException("Unable to acquire page")
@@ -126,22 +131,16 @@ def ocr(input_path: str, output_path: str):
         if new_doc is None:
             raise Exception("Unable to open pdf : " + str(pdfix.GetError()))
 
-        new_page = new_doc.AcquirePage(
-            0
-        )  # this is ok because there is always only one page in the new PDF file
+        # new_page = new_doc.AcquirePage(
+        #     0
+        # )  # this is ok because there is always only one page in the new PDF file
 
-        if not doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
-            raise Exception("Unable to insert page:" + str(pdfix.GetError()))
+        if not out_pdf_doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
+            raise Exception("Failed to insert page: " + str(pdfix.GetError()))
 
-        # new_pages.append(copy.deepcopy(new_page))
-        new_page.Release()
+        # new_page.Release()
 
-    # remove existing pages
-    for i in reversed(range(doc_num_pages + 1, doc.GetNumPages())):
-        if not doc.DeletePages(i, i):
-            raise PdfixException("Failed to delete pages: " + str(pdfix.GetError()))
-
-    if not doc.Save(output_path, kSaveFull):
+    if not out_pdf_doc.Save(output_path, kSaveFull):
         raise Exception("Unable to save pdf : " + pdfix.GetError())
 
     # with open(output_path, "w+b") as f:

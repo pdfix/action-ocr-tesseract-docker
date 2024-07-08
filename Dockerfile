@@ -29,4 +29,4 @@ COPY requirements.txt /usr/tesseract-ocr/
 RUN pip install --no-cache-dir -r requirements.txt 
 
 
-ENTRYPOINT [".env/bin/python3", "src/app.py"]
+ENTRYPOINT ["venv/bin/python3", "src/app.py"]
