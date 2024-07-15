@@ -16,8 +16,8 @@ def main():
         help="The output file (either .txt or .json)",
     )
 
-    parser.add_argument("--name", type=str, help="Pdfix license name")
-    parser.add_argument("--key", type=str, help="Pdfix license key")
+    parser.add_argument("--name", type=str, default="", help="Pdfix license name")
+    parser.add_argument("--key", type=str, default="", help="Pdfix license key")
     args = parser.parse_args()
 
     if not args.input or not args.output:

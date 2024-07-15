@@ -102,8 +102,11 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str):
     if pdfix is None:
         raise Exception("Pdfix Initialization fail")
 
-    if not pdfix.GetAccountAuthorization().Authorize(license_name, license_key):
-        raise Exception("Pdfix Authorization fail")
+    if license_name and license_key:
+        if not pdfix.GetAccountAuthorization().Authorize(license_name, license_key):
+            raise Exception("Pdfix Authorization fail")
+    else:
+        print("No license name or key provided. Using Pdfix trial")
 
     # open doc
     doc = pdfix.OpenDoc(input_path, "")
