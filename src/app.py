@@ -16,6 +16,8 @@ def main():
         help="The output file (either .txt or .json)",
     )
 
+    parser.add_argument("--name", type=str, help="Pdfix license name")
+    parser.add_argument("--key", type=str, help="Pdfix license key")
     args = parser.parse_args()
 
     if not args.input or not args.output:
@@ -29,7 +31,11 @@ def main():
         return
 
     if input_file.lower().endswith(".pdf"):
-        ocr(input_file, output_file)
+        try:
+            ocr(input_file, output_file, args.name, args.key)
+        except Exception as e:
+            print("Failed to run: {}".format(e))
+
     else:
         print("Input file must be PDF")
 

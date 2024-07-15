@@ -94,7 +94,7 @@ def render_pages(page: PdfPage, pdfix: Pdfix):
         return pdf
 
 
-def ocr(input_path: str, output_path: str):
+def ocr(input_path: str, output_path: str, license_name: str, license_key: str):
     # List of available languages
     print("Available config files: {}".format(pytesseract.get_languages(config="")))
 
@@ -102,7 +102,7 @@ def ocr(input_path: str, output_path: str):
     if pdfix is None:
         raise Exception("Pdfix Initialization fail")
 
-    if not pdfix.GetAccountAuthorization().Authorize("TEST", "5kCYsTvbZLNHy3wt"):
+    if not pdfix.GetAccountAuthorization().Authorize(license_name, license_key):
         raise Exception("Pdfix Authorization fail")
 
     # open doc
@@ -112,35 +112,75 @@ def ocr(input_path: str, output_path: str):
 
     doc_num_pages = doc.GetNumPages()
 
-    out_pdf_doc = pdfix.CreateDoc()
-    if out_pdf_doc is None:
-        raise Exception("Failed to create new pdf: " + str(pdfix.GetError()))
-
     for i in tqdm(range(0, doc_num_pages), desc="Processing pages"):
         page = doc.AcquirePage(i)
         if page is None:
             raise PdfixException("Unable to acquire page")
 
-        new_pdf = render_pages(page, pdfix)
+        tess_pdf = render_pages(page, pdfix)
         with open("temp.pdf", "w+b") as f:
-            f.write(new_pdf)
-        page.Release()
+            f.write(tess_pdf)
 
-        new_doc = pdfix.OpenDoc("temp.pdf", "")
+        tess_doc = pdfix.OpenDoc("temp.pdf", "")
 
-        if new_doc is None:
+        if tess_doc is None:
             raise Exception("Unable to open pdf : " + str(pdfix.GetError()))
 
-        # new_page = new_doc.AcquirePage(
-        #     0
-        # )  # this is ok because there is always only one page in the new PDF file
+        tess_page = tess_doc.AcquirePage(
+            0
+        )  # this is ok because there is always only one page in the new PDF file
 
-        if not out_pdf_doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
-            raise Exception("Failed to insert page: " + str(pdfix.GetError()))
+        # if not out_pdf_doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
+        #     raise Exception("Failed to insert page: " + str(pdfix.GetError()))
+
+        xobj = doc.CreateXObjectFromPage(tess_page)
+        if xobj is None:
+            raise Exception(
+                "Failed to create XObject from page: " + str(pdfix.GetError())
+            )
+
+        tess_page.Release()
+        tess_doc.Close()
+
+        crop_box = page.GetCropBox()
+        zoom = 2
+
+        # calculate matrix for placing text on a page
+        rotate = (page.GetRotate() / 90) % 4
+        matrix = PdfMatrix()
+        matrix = utils.PdfMatrixRotate(matrix, rotate * utils.kPi / 2, False)
+        matrix = utils.PdfMatrixScale(matrix, 1 / zoom, 1 / zoom, False)
+        if rotate == 0:
+            matrix = utils.PdfMatrixTranslate(
+                matrix, crop_box.left, crop_box.bottom, False
+            )
+        elif rotate == 1:
+            matrix = utils.PdfMatrixTranslate(
+                matrix, crop_box.right, crop_box.bottom, False
+            )
+        elif rotate == 2:
+            matrix = utils.PdfMatrixTranslate(
+                matrix, crop_box.right, crop_box.top, False
+            )
+        elif rotate == 3:
+            matrix = utils.PdfMatrixTranslate(
+                matrix, crop_box.left, crop_box.top, False
+            )
+
+        content = page.GetContent()
+        print("tu som, page: " + str(i))
+
+        print(matrix.a)
+
+        form = content.AddNewForm(-1, xobj, matrix)
+
+        print("tu nie som")
+        if form is None:
+            raise Exception("Failed to add xobject to page: " + str(Pdfix.GetError()))
 
         # new_page.Release()
 
-    if not out_pdf_doc.Save(output_path, kSaveFull):
+    if not doc.Save(output_path, kSaveFull):
         raise Exception("Unable to save pdf : " + pdfix.GetError())
 
     # with open(output_path, "w+b") as f:

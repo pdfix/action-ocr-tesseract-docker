@@ -2,7 +2,7 @@ certifi==2024.7.4
 charset-normalizer==3.3.2
 idna==3.7
 packaging==24.1
-pdfix-sdk==8.1.1
+pdfix-sdk==8.1.2
 pillow==10.4.0
 pytesseract==0.3.10
 requests==2.32.3
