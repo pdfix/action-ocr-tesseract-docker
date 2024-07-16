@@ -8,12 +8,12 @@ def main():
     parser = argparse.ArgumentParser(
         description="Process a PDF or image file with Tesseract OCR"
     )
-    parser.add_argument("-i", "--input", type=str, help="The input PDF or image file")
+    parser.add_argument("-i", "--input", type=str, help="The input PDF file")
     parser.add_argument(
         "-o",
         "--output",
         type=str,
-        help="The output file (either .txt or .json)",
+        help="The output PDF file",
     )
     parser.add_argument(
         "--lang",
@@ -36,14 +36,14 @@ def main():
         print(f"Error: The input file '{input_file}' does not exist.")
         return
 
-    if input_file.lower().endswith(".pdf"):
+    if input_file.lower().endswith(".pdf") and output_file.lower().endswith(".pdf"):
         try:
             ocr(input_file, output_file, args.name, args.key, args.lang)
         except Exception as e:
             print("Failed to run: {}".format(e))
 
     else:
-        print("Input file must be PDF")
+        print("Input and output file must be PDF")
 
 
 if __name__ == "__main__":
