@@ -4,7 +4,7 @@ FROM debian:stable-slim
 # Install Tesseract OCR and necessary dependencies
 RUN apt-get update && \
     apt-get install -y \
-    tesseract-ocr \
+    tesseract-ocr-all \
     python3 \
     python3-pip \
     python3-venv \
