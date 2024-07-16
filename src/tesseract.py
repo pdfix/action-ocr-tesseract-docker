@@ -59,24 +59,6 @@ def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
     if not page.DrawContent(renderParams):
         raise PdfixException("Unable to draw content")
 
-    crop_box = page.GetCropBox()
-
-    # calculate matrix for placing text on a page
-    rotate = (page.GetRotate() / 90) % 4
-    matrix = PdfMatrix()
-    matrix = utils.PdfMatrixRotate(matrix, rotate * utils.kPi / 2, False)
-    matrix = utils.PdfMatrixScale(matrix, 1 / zoom, 1 / zoom, False)
-    if rotate == 0:
-        matrix = utils.PdfMatrixTranslate(matrix, crop_box.left, crop_box.bottom, False)
-    elif rotate == 1:
-        matrix = utils.PdfMatrixTranslate(
-            matrix, crop_box.right, crop_box.bottom, False
-        )
-    elif rotate == 2:
-        matrix = utils.PdfMatrixTranslate(matrix, crop_box.right, crop_box.top, False)
-    elif rotate == 3:
-        matrix = utils.PdfMatrixTranslate(matrix, crop_box.left, crop_box.top, False)
-
     # create temp file for rendering
     with tempfile.NamedTemporaryFile() as tmp:
         # save image to file
