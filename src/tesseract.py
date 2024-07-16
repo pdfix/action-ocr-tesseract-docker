@@ -16,6 +16,8 @@ from pdfixsdk.Pdfix import (
     kPsTruncate,
     PdfImageParams,
     PdfPage,
+    PdsContent,
+    kPdsPageText,
 )
 
 import utils
@@ -123,6 +125,15 @@ def ocr(
         # if not out_pdf_doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
         #     raise Exception("Failed to insert page: " + str(pdfix.GetError()))
 
+        tess_page_content = tess_page.GetContent()
+        for i in reversed(range(0, tess_page_content.GetNumObjects())):
+            obj = tess_page_content.GetObject(i)
+            obj_type = obj.GetObjectType()
+            if not obj_type == kPdsPageText:
+                tess_page_content.RemoveObject(obj)
+
+        tess_page.SetContent()
+
         xobj = doc.CreateXObjectFromPage(tess_page)
         if xobj is None:
             raise Exception(
@@ -158,13 +169,7 @@ def ocr(
             )
 
         content = page.GetContent()
-        print("tu som, page: " + str(i))
-
-        print(matrix.a)
-
         form = content.AddNewForm(-1, xobj, matrix)
-
-        print("tu nie som")
         if form is None:
             raise Exception("Failed to add xobject to page: " + str(Pdfix.GetError()))
 
