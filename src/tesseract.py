@@ -27,7 +27,7 @@ class PdfixException(Exception):
         self.add_note(message if len(message) else str(GetPdfix().GetError()))
 
 
-def render_pages(page: PdfPage, pdfix: Pdfix):
+def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
     """
     Renders a PDF page into a temporary file, which then used for OCR
 
@@ -90,13 +90,16 @@ def render_pages(page: PdfPage, pdfix: Pdfix):
         if not image.SaveToStream(stm, imgParams):
             raise PdfixException("Unable to save image to stream")
 
-        pdf = pytesseract.image_to_pdf_or_hocr(tmp.name + ".jpg", extension="pdf")
+        pdf = pytesseract.image_to_pdf_or_hocr(
+            tmp.name + ".jpg", extension="pdf", lang=lang
+        )
         return pdf
 
 
-def ocr(input_path: str, output_path: str, license_name: str, license_key: str):
+def ocr(input_path: str, output_path: str, license_name: str, license_key: str, lang: str):
     # List of available languages
     print("Available config files: {}".format(pytesseract.get_languages(config="")))
+    print("Using langauge: {}".format(lang))
 
     pdfix = GetPdfix()
     if pdfix is None:

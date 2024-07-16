@@ -5,7 +5,7 @@ IMAGE="$IMAGE_NAME:$IMAGE_TAG"
 
 # Initialize variables for arguments
 FORCE_REBUILD=false
-HOST_FOLDER=""
+LANG=""
 INPUT_PDF=""
 OUTPUT_PDF=""
 
@@ -15,9 +15,9 @@ print_help() {
     echo
     echo "Options:"
     echo "  --build                 Force rebuild of the Docker image."
-    echo "  --folder <path>         Specify the host folder to be mounted."
     echo "  --input <input.pdf>     Specify the name of the input PDF file."
     echo "  --output <output.pdf>   Specify the name of the output PDF file."
+    echo "  --lang <lang>           Specify the language."
     echo "  --help                  Display this help message and exit."
 }
 
@@ -25,7 +25,7 @@ print_help() {
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --build) FORCE_REBUILD=true ;;
-        --folder) HOST_FOLDER="$2"; shift ;;
+        --lang) LANG="$2"; shift ;;
         --input) INPUT_PDF="$2"; shift ;;
         --output) OUTPUT_PDF="$2"; shift ;;
         --help) print_help; exit 0 ;;
@@ -35,11 +35,18 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Check if required arguments are provided
-if [ -z "$HOST_FOLDER" ] || [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ]; then
-    echo "Error: --folder, --input, and --output arguments are required."
+if [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ]; then
+    echo "Error: --input and --output arguments are required."
     print_help
     exit 1
 fi
+
+# Extract directory paths and file names
+INPUT_DIR=$(dirname "$INPUT_PDF")
+INPUT_FILE=$(basename "$INPUT_PDF")
+OUTPUT_DIR=$(dirname "$OUTPUT_PDF")
+OUTPUT_FILE=$(basename "$OUTPUT_PDF")
+
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null
@@ -77,4 +84,8 @@ else
 fi
 
 # Run the Docker container with the specified arguments
-docker run --rm -v "$HOST_FOLDER":/data -it $IMAGE -i /data/"$INPUT_PDF" -o /data/"$OUTPUT_PDF"
+if [ -n "$LANG" ]; then
+    docker run --rm -v "$INPUT_DIR":/data -v "$OUTPUT_DIR":/data -it $IMAGE -i /data/"$INPUT_FILE" -o /data/"$OUTPUT_FILE" --lang $LANG
+else
+    docker run --rm -v "$INPUT_DIR":/data -v "$OUTPUT_DIR":/data -it $IMAGE -i /data/"$INPUT_FILE" -o /data/"$OUTPUT_FILE"
+fi

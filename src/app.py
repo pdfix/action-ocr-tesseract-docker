@@ -15,6 +15,13 @@ def main():
         type=str,
         help="The output file (either .txt or .json)",
     )
+    parser.add_argument(
+        "-l",
+        "--lang",
+        type=str,
+        default="eng",
+        help="Language identifier",
+    )
 
     parser.add_argument("--name", type=str, default="", help="Pdfix license name")
     parser.add_argument("--key", type=str, default="", help="Pdfix license key")
