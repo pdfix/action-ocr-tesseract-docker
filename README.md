@@ -15,7 +15,7 @@ Usage:
 Options:
   --input <input.pdf>     Path to the input PDF file
   --output <output.pdf>   Path the output PDF file
-  --lang <lang>           OCR language
+  --lang <lang>           OCR language (default: eng)
   --name <name>           License name
   --key <key>             License key
   --build                 Force rebuild of the Docker image
@@ -51,6 +51,7 @@ Arguments `--input`, `--output`, `--lang`, `--name`, `--key` are the same as the
 - PDFix SDK - https://pdfix.net/terms
 - OCR Tesseract - https://github.com/tesseract-ocr/tesseract/
 
+Trial version of the PDFix SDK may apply a watermark on the page and redact random parts of the PDF.
 
 ## Help & Support
 To obtain a PDFix SDK license or report an issue please contact us at support@pdfix.net.
