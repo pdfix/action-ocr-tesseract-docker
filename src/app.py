@@ -16,7 +16,6 @@ def main():
         help="The output file (either .txt or .json)",
     )
     parser.add_argument(
-        "-l",
         "--lang",
         type=str,
         default="eng",
@@ -39,7 +38,7 @@ def main():
 
     if input_file.lower().endswith(".pdf"):
         try:
-            ocr(input_file, output_file, args.name, args.key)
+            ocr(input_file, output_file, args.name, args.key, args.lang)
         except Exception as e:
             print("Failed to run: {}".format(e))
 

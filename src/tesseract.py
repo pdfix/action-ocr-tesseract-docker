@@ -96,7 +96,9 @@ def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
         return pdf
 
 
-def ocr(input_path: str, output_path: str, license_name: str, license_key: str, lang: str):
+def ocr(
+    input_path: str, output_path: str, license_name: str, license_key: str, lang: str
+):
     # List of available languages
     print("Available config files: {}".format(pytesseract.get_languages(config="")))
     print("Using langauge: {}".format(lang))
@@ -123,7 +125,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
         if page is None:
             raise PdfixException("Unable to acquire page")
 
-        tess_pdf = render_pages(page, pdfix)
+        tess_pdf = render_pages(page, pdfix, lang)
         with open("temp.pdf", "w+b") as f:
             f.write(tess_pdf)
 

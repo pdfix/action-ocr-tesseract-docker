@@ -8,6 +8,8 @@ FORCE_REBUILD=false
 LANG=""
 INPUT_PDF=""
 OUTPUT_PDF=""
+LICENSE_NAME=""
+LICENSE_KEY=""
 
 # Function to print help message
 print_help() {
@@ -18,6 +20,8 @@ print_help() {
     echo "  --input <input.pdf>     Specify the name of the input PDF file."
     echo "  --output <output.pdf>   Specify the name of the output PDF file."
     echo "  --lang <lang>           Specify the language."
+    echo "  --name <name>   Specify the license name."
+    echo "  --key <key>     Specify the license key."
     echo "  --help                  Display this help message and exit."
 }
 
@@ -28,6 +32,8 @@ while [[ "$#" -gt 0 ]]; do
         --lang) LANG="$2"; shift ;;
         --input) INPUT_PDF="$2"; shift ;;
         --output) OUTPUT_PDF="$2"; shift ;;
+        --name) LICENSE_NAME="$2"; shift ;;
+        --key) LICENSE_KEY="$2"; shift ;;
         --help) print_help; exit 0 ;;
         *) echo "Unknown parameter passed: $1"; print_help; exit 1 ;;
     esac
@@ -46,7 +52,6 @@ INPUT_DIR=$(dirname "$INPUT_PDF")
 INPUT_FILE=$(basename "$INPUT_PDF")
 OUTPUT_DIR=$(dirname "$OUTPUT_PDF")
 OUTPUT_FILE=$(basename "$OUTPUT_PDF")
-
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null
@@ -84,8 +89,20 @@ else
 fi
 
 # Run the Docker container with the specified arguments
+docker_cmd="docker run --rm -v \"$INPUT_DIR\":/data -v \"$OUTPUT_DIR\":/data"
 if [ -n "$LANG" ]; then
-    docker run --rm -v "$INPUT_DIR":/data -v "$OUTPUT_DIR":/data -it $IMAGE -i /data/"$INPUT_FILE" -o /data/"$OUTPUT_FILE" --lang $LANG
-else
-    docker run --rm -v "$INPUT_DIR":/data -v "$OUTPUT_DIR":/data -it $IMAGE -i /data/"$INPUT_FILE" -o /data/"$OUTPUT_FILE"
+    docker_cmd+=" -v \"$LANG\":/lang"
 fi
+docker_cmd+=" -it $IMAGE -i /data/\"$INPUT_FILE\" -o /data/\"$OUTPUT_FILE\""
+
+if [ -n "$LANG" ]; then
+    docker_cmd+=" --lang \"$LANG\""
+fi
+if [ -n "$LICENSE_NAME" ]; then
+    docker_cmd+=" --name \"$LICENSE_NAME\""
+fi
+if [ -n "$LICENSE_KEY" ]; then
+    docker_cmd+=" --key \"$LICENSE_KEY\""
+fi
+
+eval $docker_cmd
