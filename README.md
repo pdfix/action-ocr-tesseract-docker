@@ -2,11 +2,10 @@
 
 Docker image based PDF text recogntion with OCR Tesseract and PDFix SDK
 
-## Requirements
-- Docker Desktop/Engine
-To install Docker Desktop or Docker Engine visit https://docs.docker.com/engine/install/
+## System Requirements
+- Docker Engine https://docs.docker.com/engine/install/
 
-## Run using Command Line interface
+## Run using Command Line Interface
 
 Usage:
 ```
@@ -55,4 +54,5 @@ Arguments `--input`, `--output`, `--lang`, `--name`, `--key` are the same as the
 
 ## Help & Support
 To obtain a PDFix SDK license or report an issue please contact us at support@pdfix.net.
+For more information visit https://pdfix.net
 
