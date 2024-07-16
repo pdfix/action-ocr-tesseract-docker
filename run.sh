@@ -92,12 +92,15 @@ else
     build_dockerfile
 fi
 
+DATA_IN="/data_in"
+DATA_OUT="/data_out"
+
 # Run the Docker container with the specified arguments
-docker_cmd="docker run --rm -v \"$INPUT_DIR\":/data -v \"$OUTPUT_DIR\":/data"
+docker_cmd="docker run --rm -v \"$INPUT_DIR\":\"$DATA_IN\" -v \"$OUTPUT_DIR\":\"$DATA_OUT\""
 if [ -n "$LANG" ]; then
     docker_cmd+=" -v \"$LANG\":/lang"
 fi
-docker_cmd+=" -it $IMAGE -i /data/\"$INPUT_FILE\" -o /data/\"$OUTPUT_FILE\""
+docker_cmd+=" -it $IMAGE -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\""
 
 if [ -n "$LANG" ]; then
     docker_cmd+=" --lang \"$LANG\""
