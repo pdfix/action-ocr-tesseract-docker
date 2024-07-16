@@ -1,5 +1,9 @@
 #!/bin/bash
-IMAGE_NAME="tesseract-ocr"
+
+# init
+pushd "$(dirname $0)" > /dev/null
+
+IMAGE_NAME="pdfix-tesseract-ocr"
 IMAGE_TAG="latest"
 IMAGE="$IMAGE_NAME:$IMAGE_TAG"
 
@@ -16,13 +20,13 @@ print_help() {
     echo "Usage: $0 [OPTIONS]"
     echo
     echo "Options:"
-    echo "  --build                 Force rebuild of the Docker image."
-    echo "  --input <input.pdf>     Specify the name of the input PDF file."
-    echo "  --output <output.pdf>   Specify the name of the output PDF file."
-    echo "  --lang <lang>           Specify the language."
-    echo "  --name <name>   Specify the license name."
-    echo "  --key <key>     Specify the license key."
-    echo "  --help                  Display this help message and exit."
+    echo "  --input <input.pdf>     Path to the input PDF file"
+    echo "  --output <output.pdf>   Path the output PDF file"
+    echo "  --lang <lang>           OCR language"
+    echo "  --name <name>           License name"
+    echo "  --key <key>             License key"
+    echo "  --build                 Force rebuild of the Docker image"
+    echo "  --help                  Display this help message"
 }
 
 # Parse script arguments
@@ -40,7 +44,7 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-# Check if required arguments are provided
+# Check required arguments
 if [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ]; then
     echo "Error: --input and --output arguments are required."
     print_help
@@ -106,3 +110,5 @@ if [ -n "$LICENSE_KEY" ]; then
 fi
 
 eval $docker_cmd
+
+popd > /dev/null
