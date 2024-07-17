@@ -1,7 +1,4 @@
-import copy
 import tempfile
-
-from tqdm import tqdm
 
 import pytesseract
 from pdfixsdk.Pdfix import (
@@ -16,9 +13,9 @@ from pdfixsdk.Pdfix import (
     kPsTruncate,
     PdfImageParams,
     PdfPage,
-    PdsContent,
     kPdsPageText,
 )
+from tqdm import tqdm
 
 import utils
 
@@ -29,18 +26,23 @@ class PdfixException(Exception):
         self.add_note(message if len(message) else str(GetPdfix().GetError()))
 
 
-def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
+def render_pages(page: PdfPage, pdfix: Pdfix, lang: str) -> bytes:
     """
-    Renders a PDF page into a temporary file, which then used for OCR
+    Render a PDF page into a temporary file, which is then used for OCR.
 
-    Params
-    ------
-    page: PdfPage
-        Page for OCR
-
+    Parameters
+    ----------
+    page : PdfPage
+        The PDF page to be processed for OCR.
     pdfix : Pdfix
-        Pdfix SDK object
+        The Pdfix SDK object.
+    lang : str
+        The language identifier for OCR.
 
+    Returns
+    -------
+    bytes
+        Raw PDF bytes.
     """
     zoom = 2.0
     pageView = page.AcquirePageView(zoom, kRotate0)
@@ -49,19 +51,19 @@ def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
 
     width = pageView.GetDeviceWidth()
     height = pageView.GetDeviceHeight()
-    # create an image
+    # Create an image
     image = pdfix.CreateImage(width, height, kImageDIBFormatArgb)
     if image is None:
         raise PdfixException("Unable to create image")
 
-    # render page
+    # Render page
     renderParams = PdfPageRenderParams()
     renderParams.image = image
     renderParams.matrix = pageView.GetDeviceMatrix()
     if not page.DrawContent(renderParams):
         raise PdfixException("Unable to draw content")
 
-    # create temp file for rendering
+    # Create temp file for rendering
     with tempfile.NamedTemporaryFile() as tmp:
         # save image to file
         stm = pdfix.CreateFileStream(tmp.name + ".jpg", kPsTruncate)
@@ -81,8 +83,28 @@ def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
 
 
 def ocr(
-    input_path: str, output_path: str, license_name: str, license_key: str, lang: str
-):
+    input_path: str,
+    output_path: str,
+    license_name: str,
+    license_key: str,
+    lang: str = "eng",
+) -> None:
+    """
+    Run OCR using Tesseract.
+
+    Parameters
+    ----------
+    input_path : str
+        Input path to the PDF file.
+    output_path : str
+        Output path for saving the PDF file.
+    license_name : str
+        Pdfix SDK license name.
+    license_key : str
+        Pdfix SDK license key.
+    lang : str, optional
+        Language identifier for OCR Tesseract. Default value: "eng".
+    """
     # List of available languages
     print("Available config files: {}".format(pytesseract.get_languages(config="")))
     print("Using langauge: {}".format(lang))
@@ -97,7 +119,7 @@ def ocr(
     else:
         print("No license name or key provided. Using Pdfix trial")
 
-    # open doc
+    # Open doc
     doc = pdfix.OpenDoc(input_path, "")
     if doc is None:
         raise Exception("Unable to open pdf : " + pdfix.GetError())
@@ -109,7 +131,10 @@ def ocr(
         if page is None:
             raise PdfixException("Unable to acquire page")
 
-        tess_pdf = render_pages(page, pdfix, lang)
+        try:
+            tess_pdf = render_pages(page, pdfix, lang)
+        except Exception as e:
+            raise e
         with open("temp.pdf", "w+b") as f:
             f.write(tess_pdf)
 
@@ -120,10 +145,7 @@ def ocr(
 
         tess_page = tess_doc.AcquirePage(
             0
-        )  # this is ok because there is always only one page in the new PDF file
-
-        # if not out_pdf_doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
-        #     raise Exception("Failed to insert page: " + str(pdfix.GetError()))
+        )  # This is ok because there is always only one page in the new PDF file
 
         tess_page_content = tess_page.GetContent()
         for i in reversed(range(0, tess_page_content.GetNumObjects())):
