@@ -30,18 +30,7 @@ class PdfixException(Exception):
 
 
 def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
-    """
-    Renders a PDF page into a temporary file, which then used for OCR
-
-    Params
-    ------
-    page: PdfPage
-        Page for OCR
-
-    pdfix : Pdfix
-        Pdfix SDK object
-
-    """
+    # Renders a PDF page into a temporary file, which then used for OCR
     zoom = 2.0
     pageView = page.AcquirePageView(zoom, kRotate0)
     if pageView is None:
@@ -49,21 +38,21 @@ def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
 
     width = pageView.GetDeviceWidth()
     height = pageView.GetDeviceHeight()
-    # create an image
+    # Create an image
     image = pdfix.CreateImage(width, height, kImageDIBFormatArgb)
     if image is None:
         raise PdfixException("Unable to create image")
 
-    # render page
+    # Render page
     renderParams = PdfPageRenderParams()
     renderParams.image = image
     renderParams.matrix = pageView.GetDeviceMatrix()
     if not page.DrawContent(renderParams):
         raise PdfixException("Unable to draw content")
 
-    # create temp file for rendering
+    # Create temp file for rendering
     with tempfile.NamedTemporaryFile() as tmp:
-        # save image to file
+        # Save image to file
         stm = pdfix.CreateFileStream(tmp.name + ".jpg", kPsTruncate)
         if stm is None:
             raise PdfixException("Unable to create file stream")
@@ -97,60 +86,60 @@ def ocr(
     else:
         print("No license name or key provided. Using Pdfix trial")
 
-    # open doc
+    # Open doc
     doc = pdfix.OpenDoc(input_path, "")
     if doc is None:
         raise Exception("Unable to open pdf : " + pdfix.GetError())
 
     doc_num_pages = doc.GetNumPages()
 
+    # Process each page
     for i in tqdm(range(0, doc_num_pages), desc="Processing pages"):
         page = doc.AcquirePage(i)
         if page is None:
             raise PdfixException("Unable to acquire page")
 
-        tess_pdf = render_pages(page, pdfix, lang)
-        with open("temp.pdf", "w+b") as f:
-            f.write(tess_pdf)
+        temp_pdf = render_pages(page, pdfix, lang)
+        with open("/data_out/temp.pdf", "w+b") as f:
+            f.write(temp_pdf)
 
-        tess_doc = pdfix.OpenDoc("temp.pdf", "")
+        temp_doc = pdfix.OpenDoc("/data_out/temp.pdf", "")
 
-        if tess_doc is None:
+        if temp_doc is None:
             raise Exception("Unable to open pdf : " + str(pdfix.GetError()))
 
-        tess_page = tess_doc.AcquirePage(
-            0
-        )  # this is ok because there is always only one page in the new PDF file
+        # There is always only one page in the new PDF file
+        temp_page = temp_doc.AcquirePage(0)  
+        temp_page_box = temp_page.GetCropBox()
 
-        # if not out_pdf_doc.InsertPages(-1 + i, new_doc, 0, 0, 2):
-        #     raise Exception("Failed to insert page: " + str(pdfix.GetError()))
-
-        tess_page_content = tess_page.GetContent()
-        for i in reversed(range(0, tess_page_content.GetNumObjects())):
-            obj = tess_page_content.GetObject(i)
+        # Remove other then text page objects from the page content
+        temp_page_content = temp_page.GetContent()
+        for i in reversed(range(0, temp_page_content.GetNumObjects())):
+            obj = temp_page_content.GetObject(i)
             obj_type = obj.GetObjectType()
             if not obj_type == kPdsPageText:
-                tess_page_content.RemoveObject(obj)
+                temp_page_content.RemoveObject(obj)
 
-        tess_page.SetContent()
+        temp_page.SetContent()
 
-        xobj = doc.CreateXObjectFromPage(tess_page)
+        xobj = doc.CreateXObjectFromPage(temp_page)
         if xobj is None:
             raise Exception(
                 "Failed to create XObject from page: " + str(pdfix.GetError())
             )
 
-        tess_page.Release()
-        tess_doc.Close()
+        temp_page.Release()
+        temp_doc.Close()
 
         crop_box = page.GetCropBox()
-        zoom = 2
-
-        # calculate matrix for placing text on a page
+        scale_x = (crop_box.right - crop_box.left) / (temp_page_box.right - temp_page_box.left)
+        scale_y = (crop_box.top - crop_box.bottom) / (temp_page_box.top - temp_page_box.bottom)   
+       
+        # Calculate matrix for placing xObject on a page
         rotate = (page.GetRotate() / 90) % 4
         matrix = PdfMatrix()
         matrix = utils.PdfMatrixRotate(matrix, rotate * utils.kPi / 2, False)
-        matrix = utils.PdfMatrixScale(matrix, 1 / zoom, 1 / zoom, False)
+        matrix = utils.PdfMatrixScale(matrix, scale_x, scale_y, False)
         if rotate == 0:
             matrix = utils.PdfMatrixTranslate(
                 matrix, crop_box.left, crop_box.bottom, False
@@ -173,10 +162,5 @@ def ocr(
         if form is None:
             raise Exception("Failed to add xobject to page: " + str(Pdfix.GetError()))
 
-        # new_page.Release()
-
     if not doc.Save(output_path, kSaveFull):
         raise Exception("Unable to save pdf : " + pdfix.GetError())
-
-    # with open(output_path, "w+b") as f:
-    #     f.write(new_pdf)  # pdf type is bytes by default
