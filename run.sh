@@ -52,9 +52,9 @@ if [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ]; then
 fi
 
 # Extract directory paths and file names
-INPUT_DIR=$(dirname "$(realpath "$INPUT_PDF")")
+INPUT_DIR=$(dirname "$INPUT_PDF")
 INPUT_FILE=$(basename "$INPUT_PDF")
-OUTPUT_DIR=$(dirname "$(realpath "$OUTPUT_PDF")")
+OUTPUT_DIR=$(dirname "$OUTPUT_PDF")
 OUTPUT_FILE=$(basename "$OUTPUT_PDF")
 
 # Check if Docker is installed
