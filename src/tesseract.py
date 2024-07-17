@@ -1,7 +1,4 @@
-import copy
 import tempfile
-
-from tqdm import tqdm
 
 import pytesseract
 from pdfixsdk.Pdfix import (
@@ -16,9 +13,9 @@ from pdfixsdk.Pdfix import (
     kPsTruncate,
     PdfImageParams,
     PdfPage,
-    PdsContent,
     kPdsPageText,
 )
+from tqdm import tqdm
 
 import utils
 
@@ -29,8 +26,25 @@ class PdfixException(Exception):
         self.add_note(message if len(message) else str(GetPdfix().GetError()))
 
 
-def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
-    # Renders a PDF page into a temporary file, which then used for OCR
+# Renders a PDF page into a temporary file, which then used for OCR
+def render_pages(page: PdfPage, pdfix: Pdfix, lang: str) -> bytes:
+    """
+    Render a PDF page into a temporary file, which is then used for OCR.
+
+    Parameters
+    ----------
+    page : PdfPage
+        The PDF page to be processed for OCR.
+    pdfix : Pdfix
+        The Pdfix SDK object.
+    lang : str
+        The language identifier for OCR.
+
+    Returns
+    -------
+    bytes
+        Raw PDF bytes.
+    """
     zoom = 2.0
     pageView = page.AcquirePageView(zoom, kRotate0)
     if pageView is None:
@@ -70,8 +84,28 @@ def render_pages(page: PdfPage, pdfix: Pdfix, lang: str):
 
 
 def ocr(
-    input_path: str, output_path: str, license_name: str, license_key: str, lang: str
-):
+    input_path: str,
+    output_path: str,
+    license_name: str,
+    license_key: str,
+    lang: str = "eng",
+) -> None:
+    """
+    Run OCR using Tesseract.
+
+    Parameters
+    ----------
+    input_path : str
+        Input path to the PDF file.
+    output_path : str
+        Output path for saving the PDF file.
+    license_name : str
+        Pdfix SDK license name.
+    license_key : str
+        Pdfix SDK license key.
+    lang : str, optional
+        Language identifier for OCR Tesseract. Default value: "eng".
+    """
     # List of available languages
     print("Available config files: {}".format(pytesseract.get_languages(config="")))
     print("Using langauge: {}".format(lang))
@@ -99,17 +133,20 @@ def ocr(
         if page is None:
             raise PdfixException("Unable to acquire page")
 
-        temp_pdf = render_pages(page, pdfix, lang)
-        with open("/data_out/temp.pdf", "w+b") as f:
+        try:
+            temp_pdf = render_pages(page, pdfix, lang)
+        except Exception as e:
+            raise e
+        with open("/data_out/example/temp.pdf", "w+b") as f:
             f.write(temp_pdf)
 
-        temp_doc = pdfix.OpenDoc("/data_out/temp.pdf", "")
+        temp_doc = pdfix.OpenDoc("/data_out/example/temp.pdf", "")
 
         if temp_doc is None:
             raise Exception("Unable to open pdf : " + str(pdfix.GetError()))
 
         # There is always only one page in the new PDF file
-        temp_page = temp_doc.AcquirePage(0)  
+        temp_page = temp_doc.AcquirePage(0)
         temp_page_box = temp_page.GetCropBox()
 
         # Remove other then text page objects from the page content
@@ -132,9 +169,13 @@ def ocr(
         temp_doc.Close()
 
         crop_box = page.GetCropBox()
-        scale_x = (crop_box.right - crop_box.left) / (temp_page_box.right - temp_page_box.left)
-        scale_y = (crop_box.top - crop_box.bottom) / (temp_page_box.top - temp_page_box.bottom)   
-       
+        scale_x = (crop_box.right - crop_box.left) / (
+            temp_page_box.right - temp_page_box.left
+        )
+        scale_y = (crop_box.top - crop_box.bottom) / (
+            temp_page_box.top - temp_page_box.bottom
+        )
+
         # Calculate matrix for placing xObject on a page
         rotate = (page.GetRotate() / 90) % 4
         matrix = PdfMatrix()

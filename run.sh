@@ -52,9 +52,9 @@ if [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ]; then
 fi
 
 # Extract directory paths and file names
-INPUT_DIR=$(dirname "$INPUT_PDF")
+INPUT_DIR=$(dirname "$(realpath "$INPUT_PDF")")
 INPUT_FILE=$(basename "$INPUT_PDF")
-OUTPUT_DIR=$(dirname "$OUTPUT_PDF")
+OUTPUT_DIR=$(dirname "$(realpath "$OUTPUT_PDF")")
 OUTPUT_FILE=$(basename "$OUTPUT_PDF")
 
 # Check if Docker is installed
@@ -97,9 +97,7 @@ DATA_OUT="/data_out"
 
 # Run the Docker container with the specified arguments
 docker_cmd="docker run --rm -v \"$INPUT_DIR\":\"$DATA_IN\" -v \"$OUTPUT_DIR\":\"$DATA_OUT\""
-if [ -n "$LANG" ]; then
-    docker_cmd+=" -v \"$LANG\":/lang"
-fi
+
 docker_cmd+=" -it $IMAGE -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\""
 
 if [ -n "$LANG" ]; then

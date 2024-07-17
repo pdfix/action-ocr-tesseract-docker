@@ -33,14 +33,14 @@ def main():
     output_file = args.output
 
     if not os.path.isfile(input_file):
-        print(f"Error: The input file '{input_file}' does not exist.")
+        sys.exit(f"Error: The input file '{input_file}' does not exist.")
         return
 
     if input_file.lower().endswith(".pdf") and output_file.lower().endswith(".pdf"):
         try:
             ocr(input_file, output_file, args.name, args.key, args.lang)
         except Exception as e:
-            print("Failed to run: {}".format(e))
+            sys.exit("Failed to run OCR: {}".format(e))
 
     else:
         print("Input and output file must be PDF")
