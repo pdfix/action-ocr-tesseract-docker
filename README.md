@@ -42,7 +42,7 @@ Example:
 Path `/home/pdfs_in` is mapped to `/data_in` and `/home/pdfs_out` is mapped to `/data_out`
 
 ```
-docker run --rm -v /home/pdfs_in:/data_in -v /home/pdfs_out:/data_out -it pdfix-tesseract-ocr --input /data/scanned.pdf --output /data/ocred.pdf --lang eng --name $LICENSE_NAME --key $LICENSE_KEY
+docker run --rm -v /home/pdfs_in:/data_in -v /home/pdfs_out:/data_out -it pdfix-tesseract-ocr --input /data_in/scanned.pdf --output /data_out/ocred.pdf --lang eng --name $LICENSE_NAME --key $LICENSE_KEY
 ```
 Arguments `--input`, `--output`, `--lang`, `--name`, `--key` are the same as the CLI
 
