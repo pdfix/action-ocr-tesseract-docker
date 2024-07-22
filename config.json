@@ -1,0 +1,103 @@
+{
+  "name": "Pipeline OCR Tesseract",
+  "desc": "Pipeline running OCR Tesseract command.",
+  "version": {
+    "major": 1,
+    "minor": 0
+  },
+  "pipeline": [
+    {
+      "name": "OCR Tesseract",
+      "desc": "Optical content recognition of given PDF document.",
+      "path": "user-defined command folder",
+      "category": "Accessibility",
+      "program": "run.sh",
+      "stdout": "",
+      "stderr": "",
+      "returnCodes" : [0],
+      "configurations": [
+        {
+          "args": [
+            "--input",
+            "${Input PDF}",
+            "--output",
+            "${Output PDF}",
+            "--lang",
+            "${Language}",
+            "--name",
+            "${License Name}",
+            "--key",
+            "${License Key}"
+          ],
+          "name": "OCR without forced build of docker image.",
+          "desc": "Optical content recognition without forced build of docker image."
+        },
+        {
+          "args": [
+            "build",
+            "--input",
+            "${Input PDF}",
+            "--output",
+            "${Output PDF}",
+            "--lang",
+            "${Language}",
+            "--name",
+            "${License Name}",
+            "--key",
+            "${License Key}"
+          ],
+          "name": "OCR with forced build of docker image.",
+          "desc": "Optical content recognition with forced build of docker image."
+        }
+      ],
+      "configuration": {
+        "args": [
+            "--input",
+            "${Input PDF}",
+            "--output",
+            "${Output PDF}",
+            "--lang",
+            "${Language}",
+            "--name",
+            "${License Name}",
+            "--key",
+            "${License Key}"
+          ],
+          "name": "OCR without forced build of docker image.",
+          "desc": "Optical content recognition without forced build of docker image."
+      },
+      "args": [
+        {
+          "name": "Input PDF",
+          "desc": "Input PDF file",
+          "type": "file_path",
+          "value": "user-defined file path"
+        },
+        {
+          "name": "Output PDF",
+          "desc": "Output PDF file.",
+          "type": "file_path_save",
+          "value": "user-defined file path"
+        },
+        {
+          "name": "Language",
+          "desc": "Language used for recognition",
+          "type": "string",
+          "value": "en-us"
+        },
+        {
+          "name": "License Name",
+          "desc": "License name.",
+          "type": "string",
+          "value": ""
+        },
+        {
+          "name": "License Key",
+          "desc": "License key.",
+          "type": "string",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}
