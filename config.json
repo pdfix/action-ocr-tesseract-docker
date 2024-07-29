@@ -70,12 +70,16 @@
         {
           "name": "Input PDF",
           "desc": "Input PDF file",
+          "flags": 2,
+          "ext": "pdf",
           "type": "file_path",
           "value": "user-defined file path"
         },
         {
           "name": "Output PDF",
           "desc": "Output PDF file.",
+          "flags": 4,
+          "ext": "pdf",
           "type": "file_path_save",
           "value": "user-defined file path"
         },
