@@ -15,18 +15,17 @@ WORKDIR /usr/tesseract-ocr/
 
 ENV VIRTUAL_ENV=venv
 
-
 # Create a virtual environment and install dependencies
 RUN python3 -m venv venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-
-# Copy the source code and requirements.txt into the container
-COPY src/ /usr/tesseract-ocr/src/
+# Copy and install dependencies into the container
 COPY requirements.txt /usr/tesseract-ocr/
-
-
 RUN pip install --no-cache-dir -r requirements.txt 
 
+# Copy sources and resources
+COPY config.json /usr/tesseract-ocr/
+COPY run.sh /usr/tesseract-ocr/
+COPY src/ /usr/tesseract-ocr/src/
 
 ENTRYPOINT ["venv/bin/python3", "src/main.py"]
