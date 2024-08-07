@@ -43,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.DOCKER_HUB_NAMESPACE }}/{{ env.DOCKER_HUB_REPOSITORY }}
+          images: ${{ env.DOCKER_HUB_NAMESPACE }}/${{ env.DOCKER_HUB_REPOSITORY }}
           tags: ${{ env.tag }}
 
       - name: Build and push Docker image
@@ -59,6 +59,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.DOCKER_HUB_NAMESPACE }}/{{ env.DOCKER_HUB_REPOSITORY }}
+          subject-name: ${{ env.DOCKER_HUB_NAMESPACE }}/${{ env.DOCKER_HUB_REPOSITORY }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
