@@ -34,7 +34,7 @@ jobs:
       - name: Set Docker tag
         id: vars
         run: |
-          if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' || $GITHUB_REF == refs/heads/main ]]; then
+          if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' || $GITHUB_REF == refs/heads/master ]]; then
             echo "tag=latest" >> $GITHUB_ENV
           else
             echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
