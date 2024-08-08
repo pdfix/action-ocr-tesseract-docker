@@ -1,6 +1,6 @@
 {
   "name": "Pipeline OCR Tesseract",
-  "desc": "Pipeline running OCR Tesseract command.",
+  "desc": "Pipeline running OCR Tesseract action.",
   "version": {
     "major": 1,
     "minor": 0
@@ -21,6 +21,28 @@
             "--input",
             "${Input PDF}",
             "--output",
+            "${Output PDF}"
+          ],
+          "name": "OCR without forced build of docker image",
+          "desc": "OCR without forced build of docker image"
+        },
+        {
+          "args": [
+            "--input",
+            "${Input PDF}",
+            "--output",
+            "${Output PDF}",
+            "--lang",
+            "${Language}"
+          ],
+          "name": "OCR without forced build of docker image with language",
+          "desc": "OCR without forced build of docker image with language"
+        },
+        {
+          "args": [
+            "--input",
+            "${Input PDF}",
+            "--output",
             "${Output PDF}",
             "--lang",
             "${Language}",
@@ -29,8 +51,32 @@
             "--key",
             "${License Key}"
           ],
-          "name": "OCR without forced build of docker image.",
-          "desc": "Optical content recognition without forced build of docker image."
+          "name": "OCR without forced build of docker image with language and license",
+          "desc": "OCR without forced build of docker image with language and license"
+        },
+        {
+          "args": [
+            "build",
+            "--input",
+            "${Input PDF}",
+            "--output",
+            "${Output PDF}"
+          ],
+          "name": "OCR with forced build of docker image",
+          "desc": "OCR with forced build of docker image"
+        },
+        {
+          "args": [
+            "build",
+            "--input",
+            "${Input PDF}",
+            "--output",
+            "${Output PDF}",
+            "--lang",
+            "${Language}"
+          ],
+          "name": "OCR with forced build of docker image with language",
+          "desc": "OCR with forced build of docker image with language"
         },
         {
           "args": [
@@ -46,8 +92,8 @@
             "--key",
             "${License Key}"
           ],
-          "name": "OCR with forced build of docker image.",
-          "desc": "Optical content recognition with forced build of docker image."
+          "name": "OCR with forced build of docker image with language and license",
+          "desc": "OCR with forced build of docker image with language and license"
         }
       ],
       "configuration": {
@@ -63,8 +109,8 @@
             "--key",
             "${License Key}"
           ],
-          "name": "OCR without forced build of docker image.",
-          "desc": "Optical content recognition without forced build of docker image."
+          "name": "OCR without forced build of docker image with language and license",
+          "desc": "OCR without forced build of docker image with language and license"
       },
       "args": [
         {
