@@ -1,7 +1,7 @@
-name: Ruff
+name: Code style
 on: [push, pull_request]
 jobs:
-  ruff:
+  code-style:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
