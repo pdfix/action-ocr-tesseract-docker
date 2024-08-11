@@ -2,12 +2,13 @@
 # Pdfix utils
 
 import math
+
 from pdfixsdk.Pdfix import PdfMatrix
 
-kPi = 3.1415926535897932384626433832795
+pi = 3.1415926535897932384626433832795
 
 
-def PdfMatrixConcat(m: PdfMatrix, m1: PdfMatrix, prepend: bool) -> PdfMatrix:
+def pdf_matrix_concat(m: PdfMatrix, m1: PdfMatrix, prepend: bool) -> PdfMatrix:
     ret = PdfMatrix()
     if prepend:
         swap = m
@@ -22,18 +23,18 @@ def PdfMatrixConcat(m: PdfMatrix, m1: PdfMatrix, prepend: bool) -> PdfMatrix:
     return ret
 
 
-def PdfMatrixRotate(m: PdfMatrix, radian: float, prepend: bool) -> PdfMatrix:
-    cosValue = math.cos(radian)
-    sinValue = math.sin(radian)
+def pdf_matrix_rotate(m: PdfMatrix, radian: float, prepend: bool) -> PdfMatrix:
+    cos_value = math.cos(radian)
+    sin_value = math.sin(radian)
     m1 = PdfMatrix()
-    m1.a = cosValue
-    m1.b = sinValue
-    m1.c = -sinValue
-    m1.d = cosValue
-    return PdfMatrixConcat(m, m1, prepend)
+    m1.a = cos_value
+    m1.b = sin_value
+    m1.c = -sin_value
+    m1.d = cos_value
+    return pdf_matrix_concat(m, m1, prepend)
 
 
-def PdfMatrixTranslate(m: PdfMatrix, x: float, y: float, prepend: bool) -> PdfMatrix:
+def pdf_matrix_translate(m: PdfMatrix, x: float, y: float, prepend: bool) -> PdfMatrix:
     ret = m
     if prepend:
         ret.e = m.e + x * m.a + y + m.c
@@ -43,7 +44,7 @@ def PdfMatrixTranslate(m: PdfMatrix, x: float, y: float, prepend: bool) -> PdfMa
     return ret
 
 
-def PdfMatrixInverse(orig: PdfMatrix) -> PdfMatrix:
+def pdf_matrix_inverse(orig: PdfMatrix) -> PdfMatrix:
     inverse = PdfMatrix()
     i = orig.a * orig.d - orig.b * orig.c
     if abs(i) == 0:
@@ -58,7 +59,7 @@ def PdfMatrixInverse(orig: PdfMatrix) -> PdfMatrix:
     return inverse
 
 
-def PdfMatrixScale(m: PdfMatrix, sx: float, sy: float, prepend: bool) -> PdfMatrix:
+def pdf_matrix_scale(m: PdfMatrix, sx: float, sy: float, prepend: bool) -> PdfMatrix:
     m.a *= sx
     m.d *= sy
     if prepend:
