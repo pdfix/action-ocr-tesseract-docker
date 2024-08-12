@@ -1,11 +1,11 @@
 {
-  "name": "Pipeline OCR Tesseract",
-  "desc": "Pipeline running OCR Tesseract action.",
+  "name": "OCR Tesseract",
+  "desc": "Action running OCR Tesseract.",
   "version": {
     "major": 1,
     "minor": 0
   },
-  "pipeline": [
+  "actions": [
     {
       "name": "OCR Tesseract",
       "desc": "Optical content recognition of given PDF document.",
