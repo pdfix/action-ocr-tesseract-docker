@@ -5,9 +5,9 @@ import sys
 from tesseract import ocr
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Process a PDF or image file with Tesseract OCR"
+        description="Process a PDF or image file with Tesseract OCR",
     )
     parser.add_argument("-i", "--input", type=str, help="The input PDF file")
     parser.add_argument(
