@@ -70,3 +70,121 @@ def pdf_matrix_scale(m: PdfMatrix, sx: float, sy: float, prepend: bool) -> PdfMa
     m.e *= sx
     m.f *= sy
     return m
+
+
+# Mapping from ISO 639-1 language codes to Tesseract language identifiers
+iso_to_tesseract = {
+    "af": "afr",  # Afrikaans
+    "am": "amh",  # Amharic
+    "ar": "ara",  # Arabic
+    "as": "asm",  # Assamese
+    "az": "aze",  # Azerbaijani
+    "be": "bel",  # Belarusian
+    "bn": "ben",  # Bengali
+    "bo": "bod",  # Tibetan
+    "bs": "bos",  # Bosnian
+    "br": "bre",  # Breton
+    "bg": "bul",  # Bulgarian
+    "ca": "cat",  # Catalan
+    "ceb": "ceb",  # Cebuano
+    "cs": "ces",  # Czech
+    "zh": "chi_sim",  # Chinese
+    "chr": "chr",  # Cherokee
+    "co": "cos",  # Corsican
+    "cy": "cym",  # Welsh
+    "da": "dan",  # Danish
+    "de": "deu",  # German
+    "dv": "div",  # Divehi
+    "dz": "dzo",  # Dzongkha
+    "el": "ell",  # Greek
+    "en": "eng",  # English
+    "eo": "epo",  # Esperanto
+    "et": "est",  # Estonian
+    "eu": "eus",  # Basque
+    "fo": "fao",  # Faroese
+    "fa": "fas",  # Persian
+    "fi": "fin",  # Finnish
+    "fr": "fra",  # French
+    "gd": "gla",  # Scottish Gaelic
+    "ga": "gle",  # Irish
+    "gl": "glg",  # Galician
+    "gu": "guj",  # Gujarati
+    "ht": "hat",  # Haitian Creole
+    "he": "heb",  # Hebrew
+    "hi": "hin",  # Hindi
+    "hr": "hrv",  # Croatian
+    "hu": "hun",  # Hungarian
+    "hy": "hye",  # Armenian
+    "id": "ind",  # Indonesian
+    "is": "isl",  # Icelandic
+    "it": "ita",  # Italian
+    "ja": "jpn",  # Japanese
+    "kn": "kan",  # Kannada
+    "ka": "kat",  # Georgian
+    "kk": "kaz",  # Kazakh
+    "km": "khm",  # Khmer
+    "ky": "kir",  # Kyrgyz
+    "ko": "kor",  # Korean
+    "lo": "lao",  # Lao
+    "la": "lat",  # Latin
+    "lv": "lav",  # Latvian
+    "lt": "lit",  # Lithuanian
+    "lb": "ltz",  # Luxembourgish
+    "ml": "mal",  # Malayalam
+    "mr": "mar",  # Marathi
+    "mk": "mkd",  # Macedonian
+    "mt": "mlt",  # Maltese
+    "mn": "mon",  # Mongolian
+    "ne": "nep",  # Nepali
+    "nl": "nld",  # Dutch
+    "no": "nor",  # Norwegian
+    "oc": "oci",  # Occitan
+    "or": "ori",  # Odia
+    "pa": "pan",  # Punjabi
+    "pl": "pol",  # Polish
+    "pt": "por",  # Portuguese
+    "ps": "pus",  # Pashto
+    "ro": "ron",  # Romanian
+    "ru": "rus",  # Russian
+    "sa": "san",  # Sanskrit
+    "si": "sin",  # Sinhala
+    "sk": "slk",  # Slovak
+    "sl": "slv",  # Slovenian
+    "es": "spa",  # Spanish
+    "sq": "sqi",  # Albanian
+    "sr": "srp",  # Serbian
+    "su": "sun",  # Sundanese
+    "sw": "swa",  # Swahili
+    "sv": "swe",  # Swedish
+    "ta": "tam",  # Tamil
+    "tt": "tat",  # Tatar
+    "te": "tel",  # Telugu
+    "tg": "tgk",  # Tajik
+    "th": "tha",  # Thai
+    "tr": "tur",  # Turkish
+    "uk": "ukr",  # Ukrainian
+    "ur": "urd",  # Urdu
+    "uz": "uzb",  # Uzbek
+    "vi": "vie",  # Vietnamese
+    "yi": "yid",  # Yiddish
+    "yo": "yor",  # Yoruba
+}
+
+
+def translate_iso_to_tesseract(iso_lang: str) -> str | None:
+    """Translate ISO language code to Tesseract language identifier.
+
+    Parameters
+    ----------
+    iso_lang : str
+        Tesseract language identifier (str)
+
+    Returns
+    -------
+    str | None:
+        Corresponding Tesseract language identifier (str) or None if not found.
+
+    """
+    # Extract the first part of the ISO language code (e.g., 'en' from 'en-US')
+    iso_lang_part = iso_lang.split("-")[0].lower()
+    return iso_to_tesseract.get(iso_lang_part)

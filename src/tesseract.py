@@ -88,7 +88,7 @@ def ocr(
     output_path: str,
     license_name: str,
     license_key: str,
-    lang: str = "eng",
+    lang: str,
 ) -> None:
     """Run OCR using Tesseract.
 
@@ -108,7 +108,6 @@ def ocr(
     """
     # List of available languages
     print("Available config files: {}".format(pytesseract.get_languages(config="")))
-    print(f"Using langauge: {lang}")
 
     pdfix = GetPdfix()
     if pdfix is None:
@@ -124,6 +123,14 @@ def ocr(
     doc = pdfix.OpenDoc(input_path, "")
     if doc is None:
         raise Exception("Unable to open pdf : " + pdfix.GetError())
+
+    if lang == "":
+        pdf_lang = utils.translate_iso_to_tesseract(doc.GetLang())
+        lang = (
+            "eng" if pdf_lang is None else pdf_lang
+        )  # default "eng" if pdf does not have lang identifier or is not supported
+
+    print(f"Using langauge: {lang}")
 
     doc_num_pages = doc.GetNumPages()
 
@@ -187,31 +194,31 @@ def ocr(
         # Calculate matrix for placing xObject on a page
         rotate = (page.GetRotate() / 90) % 4
         matrix = PdfMatrix()
-        matrix = utils.PdfMatrixRotate(matrix, rotate * utils.kPi / 2, False)
+        matrix = utils.pdf_matrix_rotate(matrix, rotate * utils.pi / 2, False)
         matrix = utils.pdf_matrix_scale(matrix, scale_x, scale_y, False)
         if rotate == 0:
-            matrix = utils.PdfMatrixTranslate(
+            matrix = utils.pdf_matrix_translate(
                 matrix,
                 crop_box.left,
                 crop_box.bottom,
                 False,
             )
         elif rotate == 1:
-            matrix = utils.PdfMatrixTranslate(
+            matrix = utils.pdf_matrix_translate(
                 matrix,
                 crop_box.right,
                 crop_box.bottom,
                 False,
             )
         elif rotate == 2:
-            matrix = utils.PdfMatrixTranslate(
+            matrix = utils.pdf_matrix_translate(
                 matrix,
                 crop_box.right,
                 crop_box.top,
                 False,
             )
         elif rotate == 3:
-            matrix = utils.PdfMatrixTranslate(
+            matrix = utils.pdf_matrix_translate(
                 matrix,
                 crop_box.left,
                 crop_box.top,

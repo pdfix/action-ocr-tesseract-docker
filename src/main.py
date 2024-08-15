@@ -19,7 +19,7 @@ def main() -> None:
     parser.add_argument(
         "--lang",
         type=str,
-        default="eng",
+        default="",
         help="Language identifier",
     )
 
