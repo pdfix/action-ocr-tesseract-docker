@@ -11,21 +11,11 @@
       "desc": "Optical content recognition of given PDF document.",
       "path": "user-defined command folder",
       "category": "Accessibility",
-      "program": "run.sh",
+      "program": "docker run -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/lang-detect:latest -i /data/${CURRENT_INPUT_NAME} -o /data/${CURRENT_OUTPUT_NAME} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
       "stdout": "",
       "stderr": "",
       "returnCodes" : [0],
       "configurations": [
-        {
-          "args": [
-            "--input",
-            "${Input PDF}",
-            "--output",
-            "${Output PDF}"
-          ],
-          "name": "OCR without forced build of docker image",
-          "desc": "OCR without forced build of docker image"
-        },
         {
           "args": [
             "--input",
@@ -37,63 +27,6 @@
           ],
           "name": "OCR without forced build of docker image with language",
           "desc": "OCR without forced build of docker image with language"
-        },
-        {
-          "args": [
-            "--input",
-            "${Input PDF}",
-            "--output",
-            "${Output PDF}",
-            "--lang",
-            "${Language}",
-            "--name",
-            "${License Name}",
-            "--key",
-            "${License Key}"
-          ],
-          "name": "OCR without forced build of docker image with language and license",
-          "desc": "OCR without forced build of docker image with language and license"
-        },
-        {
-          "args": [
-            "build",
-            "--input",
-            "${Input PDF}",
-            "--output",
-            "${Output PDF}"
-          ],
-          "name": "OCR with forced build of docker image",
-          "desc": "OCR with forced build of docker image"
-        },
-        {
-          "args": [
-            "build",
-            "--input",
-            "${Input PDF}",
-            "--output",
-            "${Output PDF}",
-            "--lang",
-            "${Language}"
-          ],
-          "name": "OCR with forced build of docker image with language",
-          "desc": "OCR with forced build of docker image with language"
-        },
-        {
-          "args": [
-            "build",
-            "--input",
-            "${Input PDF}",
-            "--output",
-            "${Output PDF}",
-            "--lang",
-            "${Language}",
-            "--name",
-            "${License Name}",
-            "--key",
-            "${License Key}"
-          ],
-          "name": "OCR with forced build of docker image with language and license",
-          "desc": "OCR with forced build of docker image with language and license"
         }
       ],
       "configuration": {
@@ -103,14 +36,10 @@
             "--output",
             "${Output PDF}",
             "--lang",
-            "${Language}",
-            "--name",
-            "${License Name}",
-            "--key",
-            "${License Key}"
+            "${Language}"
           ],
-          "name": "OCR without forced build of docker image with language and license",
-          "desc": "OCR without forced build of docker image with language and license"
+          "name": "OCR document",
+          "desc": "OCR document"
       },
       "args": [
         {
@@ -134,18 +63,6 @@
           "desc": "Language used for recognition",
           "type": "string",
           "value": "en-us"
-        },
-        {
-          "name": "License Name",
-          "desc": "License name.",
-          "type": "string",
-          "value": ""
-        },
-        {
-          "name": "License Key",
-          "desc": "License key.",
-          "type": "string",
-          "value": ""
         }
       ]
     }
