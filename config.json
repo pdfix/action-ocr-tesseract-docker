@@ -19,47 +19,33 @@
         {
           "args": [
             "--input",
-            "${Input PDF}",
+            "${INPUT_PDF}",
             "--output",
-            "${Output PDF}",
+            "${OUTPUT_PDF}",
             "--lang",
-            "${Language}"
+            "${LANGUAGE}"
           ],
           "name": "OCR without forced build of docker image with language",
           "desc": "OCR without forced build of docker image with language"
         }
       ],
-      "configuration": {
-        "args": [
-            "--input",
-            "${Input PDF}",
-            "--output",
-            "${Output PDF}",
-            "--lang",
-            "${Language}"
-          ],
-          "name": "OCR document",
-          "desc": "OCR document"
-      },
       "args": [
         {
-          "name": "Input PDF",
+          "name": "INPUT_PDF",
           "desc": "Input PDF file",
           "flags": 2,
           "ext": "pdf",
-          "type": "file_path",
-          "value": "user-defined file path"
+          "value": ""
         },
         {
-          "name": "Output PDF",
+          "name": "OUTPUT_PDF",
           "desc": "Output PDF file.",
           "flags": 4,
           "ext": "pdf",
-          "type": "file_path_save",
-          "value": "user-defined file path"
+          "value": ""
         },
         {
-          "name": "Language",
+          "name": "LANGUAGE",
           "desc": "Language used for recognition",
           "type": "string",
           "value": "en-us"
