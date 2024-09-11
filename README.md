@@ -1,57 +1,32 @@
 # PDFix OCR with Tesseract 
 
-Docker image based PDF text recogntion with OCR Tesseract and PDFix SDK
+Docker image for PDF text recogntion with OCR Tesseract and PDFix SDK
 
 ## System Requirements
-- Docker Engine https://docs.docker.com/engine/install/
+- Docker Engine
 
-## Run using Command Line Interface
+## Run OCR using Command Line Interface
 
-Usage:
-```
-./run.sh [OPTIONS]
-```
-```
-Options:
-  --input <input.pdf>     Path to the input PDF file
-  --output <output.pdf>   Path the output PDF file
-  --lang <lang>           OCR language (default: eng)
-  --name <name>           License name
-  --key <key>             License key
-  --build                 Force rebuild of the Docker image
-  --help                  Display this help message
-```
-
-## Run a Docker image 
-
-### Build docker image
-Build the docker image with the name `pdfix-tesseract-ocr`. You can choose another name if you want.
+To run docker container as CLI you should share the folder with PDF to process using `-i` parameter. In this example it's current folder.
 
 ```
-docker build -t pdfix-tesseract-ocr .
+docker run -v $(pwd):/data/ -w /data/ pdfix/ocr-tesseract:latest --input scanned.pdf --output ocr.pdf --lang eng 
+```
+With PDFix License add these arguments. 
+```
+--name $LICENSE_NAME --key $LICENSE_KEY
 ```
 
-### Run docker container
-To run docker container you should map directories with PDF documents to the container (`-v` parameter) and pass paths to input/output PDF document in the running container
+First run will pull the docker image, which may take some time. Make your own image for more advanced use.
 
-Example: 
-
-- Your input PDF is: `/home/pdfs_in/scanned.pdf`
-- Your output PDF is: `/home/pdfs_out/ocred.pdf`
-
-Path `/home/pdfs_in` is mapped to `/data_in` and `/home/pdfs_out` is mapped to `/data_out`
-
-```
-docker run --rm -v /home/pdfs_in:/data_in -v /home/pdfs_out:/data_out -it pdfix-tesseract-ocr --input /data_in/scanned.pdf --output /data_out/ocred.pdf --lang eng --name $LICENSE_NAME --key $LICENSE_KEY
-```
-Arguments `--input`, `--output`, `--lang`, `--name`, `--key` are the same as the CLI
-
+## Run OCR using REST API
+Comming soon. Please contact us.
 
 ## License & libraries used
 - PDFix SDK - https://pdfix.net/terms
 - OCR Tesseract - https://github.com/tesseract-ocr/tesseract/
 
-Trial version of the PDFix SDK may apply a watermark on the page and redact random parts of the PDF.
+Trial version of the PDFix SDK may apply a watermark on the page and redact random parts of the PDF includeing the scanned image in background. Contact us to get an evaluation license.
 
 ## Help & Support
 To obtain a PDFix SDK license or report an issue please contact us at support@pdfix.net.
