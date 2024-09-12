@@ -7,14 +7,15 @@
   },
   "actions": [
     {
-      "name": "OCR Tesseract",
-      "desc": "Optical content recognition of given PDF document.",
-      "path": "user-defined command folder",
+      "name": "OCR with Tesseract",
+      "desc": "This action processes a PDF file using Optical Character Recognition (OCR) to extract text while allowing to specify the language for better accuracy.",
       "category": "Accessibility",
-      "program": "docker run -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/lang-detect:latest -i /data/${CURRENT_INPUT_NAME} -o /data/${CURRENT_OUTPUT_NAME} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
+      "program": "docker run -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/lang-detect:latest -i $(basename ${INPUT_PDF}) -o $(basename ${OUTPUT_PDF} --lang ${LANGUAGE} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
       "stdout": "",
       "stderr": "",
-      "returnCodes" : [0],
+      "returnCodes": [
+        0
+      ],
       "configurations": [
         {
           "args": [
@@ -25,8 +26,8 @@
             "--lang",
             "${LANGUAGE}"
           ],
-          "name": "OCR without forced build of docker image with language",
-          "desc": "OCR without forced build of docker image with language"
+          "name": "OCR PDF with selected language",
+          "desc": "Process a PDF file using Optical Character Recognition (OCR) to extract text while allowing to specify the language for better accuracy. Users can pass a PDF document, choose their preferred language, and the action will detect and convert the text content from the PDF into editable and searchable formats."
         }
       ],
       "args": [
@@ -46,9 +47,383 @@
         },
         {
           "name": "LANGUAGE",
-          "desc": "Language used for recognition",
+          "desc": "Language used for recognition. Englisg language is used as default",
           "type": "string",
-          "value": "en-us"
+          "value": "eng",
+          "set": [
+            {
+              "value": "afr"
+            },
+            {
+              "value": "amh"
+            },
+            {
+              "value": "ara"
+            },
+            {
+              "value": "asm"
+            },
+            {
+              "value": "aze"
+            },
+            {
+              "value": "aze_cyrl"
+            },
+            {
+              "value": "bel"
+            },
+            {
+              "value": "ben"
+            },
+            {
+              "value": "bod"
+            },
+            {
+              "value": "bos"
+            },
+            {
+              "value": "bre"
+            },
+            {
+              "value": "bul"
+            },
+            {
+              "value": "cat"
+            },
+            {
+              "value": "ceb"
+            },
+            {
+              "value": "ces"
+            },
+            {
+              "value": "chi_sim"
+            },
+            {
+              "value": "chi_sim_vert"
+            },
+            {
+              "value": "chi_tra"
+            },
+            {
+              "value": "chi_tra_vert"
+            },
+            {
+              "value": "chr"
+            },
+            {
+              "value": "cos"
+            },
+            {
+              "value": "cym"
+            },
+            {
+              "value": "dan"
+            },
+            {
+              "value": "deu"
+            },
+            {
+              "value": "div"
+            },
+            {
+              "value": "dzo"
+            },
+            {
+              "value": "ell"
+            },
+            {
+              "value": "eng"
+            },
+            {
+              "value": "enm"
+            },
+            {
+              "value": "epo"
+            },
+            {
+              "value": "est"
+            },
+            {
+              "value": "eus"
+            },
+            {
+              "value": "fao"
+            },
+            {
+              "value": "fas"
+            },
+            {
+              "value": "fil"
+            },
+            {
+              "value": "fin"
+            },
+            {
+              "value": "fra"
+            },
+            {
+              "value": "frk"
+            },
+            {
+              "value": "frm"
+            },
+            {
+              "value": "fry"
+            },
+            {
+              "value": "gla"
+            },
+            {
+              "value": "gle"
+            },
+            {
+              "value": "glg"
+            },
+            {
+              "value": "grc"
+            },
+            {
+              "value": "guj"
+            },
+            {
+              "value": "hat"
+            },
+            {
+              "value": "heb"
+            },
+            {
+              "value": "hin"
+            },
+            {
+              "value": "hrv"
+            },
+            {
+              "value": "hun"
+            },
+            {
+              "value": "hye"
+            },
+            {
+              "value": "iku"
+            },
+            {
+              "value": "ind"
+            },
+            {
+              "value": "isl"
+            },
+            {
+              "value": "ita"
+            },
+            {
+              "value": "ita_old"
+            },
+            {
+              "value": "jav"
+            },
+            {
+              "value": "jpn"
+            },
+            {
+              "value": "jpn_vert"
+            },
+            {
+              "value": "kan"
+            },
+            {
+              "value": "kat"
+            },
+            {
+              "value": "kat_old"
+            },
+            {
+              "value": "kaz"
+            },
+            {
+              "value": "khm"
+            },
+            {
+              "value": "kir"
+            },
+            {
+              "value": "kmr"
+            },
+            {
+              "value": "kor"
+            },
+            {
+              "value": "kor_vert"
+            },
+            {
+              "value": "lao"
+            },
+            {
+              "value": "lat"
+            },
+            {
+              "value": "lav"
+            },
+            {
+              "value": "lit"
+            },
+            {
+              "value": "ltz"
+            },
+            {
+              "value": "mal"
+            },
+            {
+              "value": "mar"
+            },
+            {
+              "value": "mkd"
+            },
+            {
+              "value": "mlt"
+            },
+            {
+              "value": "mon"
+            },
+            {
+              "value": "mri"
+            },
+            {
+              "value": "msa"
+            },
+            {
+              "value": "mya"
+            },
+            {
+              "value": "nep"
+            },
+            {
+              "value": "nld"
+            },
+            {
+              "value": "nor"
+            },
+            {
+              "value": "oci"
+            },
+            {
+              "value": "ori"
+            },
+            {
+              "value": "osd"
+            },
+            {
+              "value": "pan"
+            },
+            {
+              "value": "pol"
+            },
+            {
+              "value": "por"
+            },
+            {
+              "value": "pus"
+            },
+            {
+              "value": "que"
+            },
+            {
+              "value": "ron"
+            },
+            {
+              "value": "rus"
+            },
+            {
+              "value": "san"
+            },
+            {
+              "value": "sin"
+            },
+            {
+              "value": "slk"
+            },
+            {
+              "value": "slv"
+            },
+            {
+              "value": "snd"
+            },
+            {
+              "value": "spa"
+            },
+            {
+              "value": "spa_old"
+            },
+            {
+              "value": "sqi"
+            },
+            {
+              "value": "srp"
+            },
+            {
+              "value": "srp_latn"
+            },
+            {
+              "value": "sun"
+            },
+            {
+              "value": "swa"
+            },
+            {
+              "value": "swe"
+            },
+            {
+              "value": "syr"
+            },
+            {
+              "value": "tam"
+            },
+            {
+              "value": "tat"
+            },
+            {
+              "value": "tel"
+            },
+            {
+              "value": "tgk"
+            },
+            {
+              "value": "tha"
+            },
+            {
+              "value": "tir"
+            },
+            {
+              "value": "ton"
+            },
+            {
+              "value": "tur"
+            },
+            {
+              "value": "uig"
+            },
+            {
+              "value": "ukr"
+            },
+            {
+              "value": "urd"
+            },
+            {
+              "value": "uzb"
+            },
+            {
+              "value": "uzb_cyrl"
+            },
+            {
+              "value": "vie"
+            },
+            {
+              "value": "yid"
+            },
+            {
+              "value": "yor"
+            }
+          ]
         }
       ]
     }
