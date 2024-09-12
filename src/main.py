@@ -24,8 +24,8 @@ def main() -> None:
 
     subparsers = parser.add_subparsers(dest="subparser")
 
-    # get config subparser
-    pars_config = subparsers.add_parser("config")
+    # config subparser
+    pars_config = subparsers.add_parser("config", help="Extract config file for integration")
     pars_config.add_argument(
         "-o",
         "--output",
@@ -33,8 +33,8 @@ def main() -> None:
         help="Output to save the config JSON file. Application output is used if not provided",
     )    
 
+    # ocr subparser
     pars_ocr = subparsers.add_parser("ocr", help="Run ocr in PDF document with predefined language.")
-
     pars_ocr.add_argument("-i", "--input", type=str, help="The input PDF file")
     pars_ocr.add_argument(
         "-o",
