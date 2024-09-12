@@ -98,7 +98,7 @@ DATA_OUT="/data_out"
 # Run the Docker container with the specified arguments
 docker_cmd="docker run --rm -v \"$INPUT_DIR\":\"$DATA_IN\" -v \"$OUTPUT_DIR\":\"$DATA_OUT\""
 
-docker_cmd+=" -it $IMAGE -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\""
+docker_cmd+=" -it $IMAGE ocr -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\""
 
 if [ -n "$LANG" ]; then
     docker_cmd+=" --lang \"$LANG\""
