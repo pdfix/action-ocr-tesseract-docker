@@ -46,6 +46,7 @@
           "value": ""
         },
         {
+          "title": "Language",
           "name": "LANGUAGE",
           "desc": "Language used for recognition. Englisg language is used as default",
           "type": "string",
