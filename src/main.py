@@ -6,16 +6,22 @@ from pathlib import Path
 
 from tesseract import ocr
 
-def get_config(path) -> None:    
+
+def get_config(path: str) -> None:
     if path is None:
-        with open(os.path.join(Path(__file__).parent.absolute(), "../config.json"), 'r') as f:
-            print(f.read())    
+        with open(
+            os.path.join(Path(__file__).parent.absolute(), "../config.json"),
+            "r",
+            encoding="utf-8",
+        ) as f:
+            print(f.read())
     else:
         src = os.path.join(Path(__file__).parent.absolute(), "../config.json")
         dst = path
         shutil.copyfile(src, dst)
 
-def main() -> None:
+
+def main() -> None:  # noqa: D103
     parser = argparse.ArgumentParser(
         description="Process a PDF or image with Tesseract OCR",
     )
@@ -25,16 +31,23 @@ def main() -> None:
     subparsers = parser.add_subparsers(dest="subparser")
 
     # config subparser
-    pars_config = subparsers.add_parser("config", help="Extract config file for integration")
+    pars_config = subparsers.add_parser(
+        "config",
+        help="Extract config file for integration",
+    )
     pars_config.add_argument(
         "-o",
         "--output",
         type=str,
-        help="Output to save the config JSON file. Application output is used if not provided",
-    )    
+        help="Output to save the config JSON file. Application output\
+              is used if not provided",
+    )
 
     # ocr subparser
-    pars_ocr = subparsers.add_parser("ocr", help="Run ocr in PDF document with predefined language.")
+    pars_ocr = subparsers.add_parser(
+        "ocr",
+        help="Run ocr in PDF document with predefined language.",
+    )
     pars_ocr.add_argument("-i", "--input", type=str, help="The input PDF file")
     pars_ocr.add_argument(
         "-o",
@@ -49,15 +62,22 @@ def main() -> None:
         help="Language identifier",
     )
 
-    args = parser.parse_args()
+    try:
+        args = parser.parse_args()
+    except SystemExit as e:
+        if e.code == 0:  # This happens when --help is used, exit gracefully
+            sys.exit(0)
+        print("Failed to parse arguments. Please check the usage and try again.")
+        sys.exit(1)
 
     if args.subparser == "config":
         get_config(args.output)
         sys.exit(0)
-    elif args.subparser == "ocr":    
-
+    elif args.subparser == "ocr":
         if not args.input or not args.output:
-            parser.error("The following arguments are required: -i/--input, -o/--output")
+            parser.error(
+                "The following arguments are required: -i/--input, -o/--output",
+            )
 
         input_file = args.input
         output_file = args.output
