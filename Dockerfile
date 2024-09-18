@@ -25,7 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy sources and resources
 COPY config.json /usr/tesseract-ocr/
-COPY run.sh /usr/tesseract-ocr/
 COPY src/ /usr/tesseract-ocr/src/
 
 ENTRYPOINT ["/usr/tesseract-ocr/venv/bin/python3", "/usr/tesseract-ocr/src/main.py"]
