@@ -10,7 +10,7 @@
       "name": "OCR with Tesseract",
       "desc": "This action processes a PDF file using Optical Character Recognition (OCR) to extract text while allowing to specify the language for better accuracy.",
       "category": "Accessibility",
-      "program": "docker run -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/lang-detect:latest -i $(basename ${INPUT_PDF}) -o $(basename ${OUTPUT_PDF} --lang ${LANGUAGE} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
+      "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/ocr-tesseract:latest -i $(basename ${INPUT_PDF}) -o $(basename ${OUTPUT_PDF} --lang ${LANGUAGE} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
       "stdout": "",
       "stderr": "",
       "returnCodes": [
