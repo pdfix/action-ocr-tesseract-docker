@@ -125,7 +125,7 @@ def ocr(
     # Open doc
     doc = pdfix.OpenDoc(input_path, "")
     if doc is None:
-        raise Exception("Unable to open pdf : " + pdfix.GetError())
+        raise Exception("Unable to open pdf : " + str(pdfix.GetError()))
 
     if lang == "":
         pdf_lang = utils.translate_iso_to_tesseract(doc.GetLang())
@@ -238,4 +238,4 @@ def ocr(
             raise Exception("Failed to add xobject to page: " + str(Pdfix.GetError()))
 
     if not doc.Save(output_path, kSaveFull):
-        raise Exception("Unable to save pdf : " + pdfix.GetError())
+        raise Exception("Unable to save pdf : " + str(pdfix.GetError()))
