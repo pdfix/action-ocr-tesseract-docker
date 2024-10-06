@@ -10,7 +10,7 @@
       "name": "OCR Tesseract",
       "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents.",
       "category": "OCR",
-      "program": "docker run --platform linux/amd64 -v ${working_directory}:/data -w /data --rm pdfix/ocr-tesseract:latest -i $(basename ${input_pdf}) -o $(basename ${output_pdf} --lang ${language} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
+      "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data --rm pdfix/ocr-tesseract:latest ocr -i /data/${input_pdf} -o /data/${output_pdf} --lang ${language}",
       "stdout": "",
       "stderr": "",
       "returnCodes": [
