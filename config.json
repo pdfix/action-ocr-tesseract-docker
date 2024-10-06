@@ -1,16 +1,16 @@
 {
   "name": "OCR Tesseract",
-  "desc": "Action running OCR Tesseract.",
+  "desc": "OCR Tesseract text recognition",
   "version": {
     "major": 1,
     "minor": 0
   },
   "actions": [
     {
-      "name": "OCR with Tesseract",
-      "desc": "This action processes a PDF file using Optical Character Recognition (OCR) to extract text while allowing to specify the language for better accuracy.",
-      "category": "Accessibility",
-      "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/ocr-tesseract:latest -i $(basename ${INPUT_PDF}) -o $(basename ${OUTPUT_PDF} --lang ${LANGUAGE} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
+      "name": "OCR Tesseract",
+      "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents.",
+      "category": "OCR",
+      "program": "docker run --platform linux/amd64 -v ${working_directory}:/data -w /data --rm pdfix/ocr-tesseract:latest -i $(basename ${input_pdf}) -o $(basename ${output_pdf} --lang ${language} --name ${LICENSE_NAME} --key ${LICENSE_KEY}",
       "stdout": "",
       "stderr": "",
       "returnCodes": [
@@ -19,27 +19,25 @@
       "configurations": [
         {
           "args": [
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--lang",
-            "${LANGUAGE}"
+            "--name", 
+            "${license_name}", 
+            "--key",
+            "${license_key}"
           ],
           "name": "OCR PDF with selected language",
-          "desc": "Process a PDF file using Optical Character Recognition (OCR) to extract text while allowing to specify the language for better accuracy. Users can pass a PDF document, choose their preferred language, and the action will detect and convert the text content from the PDF into editable and searchable formats."
+          "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents."
         }
       ],
       "args": [
         {
-          "name": "INPUT_PDF",
+          "name": "input_pdf",
           "desc": "Input PDF file",
           "flags": 2,
           "ext": "pdf",
           "value": ""
         },
         {
-          "name": "OUTPUT_PDF",
+          "name": "output_pdf",
           "desc": "Output PDF file.",
           "flags": 4,
           "ext": "pdf",
@@ -47,7 +45,7 @@
         },
         {
           "title": "Language",
-          "name": "LANGUAGE",
+          "name": "language",
           "desc": "Language used for recognition. Englisg language is used as default",
           "type": "string",
           "value": "eng",
