@@ -8,6 +8,8 @@
   "icon": "image_search",
   "actions": [
     {
+      "name": "OCR Tesseract",
+      "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents",
       "category": "OCR",
       "configurations": [
         {
