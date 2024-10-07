@@ -1,15 +1,13 @@
 {
-  "name": "OCR Tesseract",
-  "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents",
-  "version": {
-    "major": 1,
-    "minor": 0
-  },
-  "icon": "image_search",
   "actions": [
     {
       "name": "OCR Tesseract",
       "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents",
+      "icon": "image_search",
+      "version": {
+        "major": 1,
+        "minor": 0
+      },
       "category": "OCR",
       "configurations": [
         {
