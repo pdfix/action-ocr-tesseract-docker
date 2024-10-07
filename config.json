@@ -5,27 +5,17 @@
     "major": 1,
     "minor": 0
   },
+  "icon": {
+    "id": "image_search"
+  },
   "actions": [
     {
-      "name": "OCR Tesseract",
-      "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents.",
       "category": "OCR",
-      "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data --rm pdfix/ocr-tesseract:latest ocr -i /data/${input_pdf} -o /data/${output_pdf} --lang ${language}",
-      "stdout": "",
-      "stderr": "",
-      "returnCodes": [
-        0
-      ],
       "configurations": [
         {
-          "args": [
-            "--name", 
-            "${license_name}", 
-            "--key",
-            "${license_key}"
-          ],
           "name": "OCR PDF with selected language",
-          "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents."
+          "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents.",
+          "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" t ocr -i /data/${input_pdf} -o /data/${output_pdf} --lang ${language}"
         }
       ],
       "args": [
