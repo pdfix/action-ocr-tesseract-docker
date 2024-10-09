@@ -1,10 +1,10 @@
-# PDFix OCR with Tesseract 
+# OCR Tesseract 
 
-Docker image for PDF text recogntion with OCR Tesseract and PDFix SDK
+A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR.
 
 ## Table of Contents
 
-- [PDFix OCR with Tesseract](#pdfix-ocr-with-tesseract)
+- [OCR Tesseract](#ocr-tesseract)
   - [Table of Contents](#table-of-contents)
   - [Getting Started](#getting-started)
   - [Run using Command Line Interface](#run-using-command-line-interface)
