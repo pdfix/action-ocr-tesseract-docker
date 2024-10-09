@@ -2,7 +2,7 @@
   "actions": [
     {
       "name": "OCR Tesseract",
-      "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents",
+      "desc": "A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR.",
       "icon": "image_search",
       "version": {
         "major": 1,
@@ -12,7 +12,7 @@
       "configurations": [
         {
           "name": "OCR Tesseract",
-          "desc": "Text Recognition through OCR with Tesseract in a PDF for extracting text from images or scanned documents",
+          "desc": "A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR.",
           "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" t ocr -i /data/${input_pdf} -o /data/${output_pdf} --lang ${language}"
         }
       ],
@@ -26,7 +26,7 @@
         },
         {
           "name": "output_pdf",
-          "desc": "Output PDF file.",
+          "desc": "Output PDF file",
           "flags": 4,
           "ext": "pdf",
           "value": ""
@@ -532,3 +532,4 @@
       ]
     }
   ]
+}
