@@ -13,7 +13,7 @@
         {
           "name": "OCR Tesseract",
           "desc": "Add an OCR text layer to scanned PDF files",
-          "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" t ocr -i /data/${input_pdf} -o /data/${output_pdf} --lang ${language}"
+          "program": "docker run --platform linux/amd64 -v \"${WORKING_DIRECTORY}:/data\" --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" t ocr -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\""
         }
       ],
       "args": [
