@@ -1,537 +1,532 @@
 {
-  "actions": [
-    {
-      "name": "OCR Tesseract",
-      "desc": "A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR",
-      "icon": "image_search",
-      "version": {
-        "major": 1,
-        "minor": 0
-      },
-      "category": "OCR",
-      "configurations": [
+    "actions": [
         {
-          "name": "OCR Tesseract",
-          "desc": "Add an OCR text layer to scanned PDF files",
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" ocr -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\""
+            "title": "OCR Tesseract",
+            "name": "ocr_tesseract",
+            "desc": "A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR",
+            "icon": "image_search",
+            "version": {
+                "major": 1,
+                "minor": 0
+            },
+            "category": "OCR",
+            "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" ocr -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\"",
+            "args": [
+                {
+                    "name": "input_pdf",
+                    "desc": "Input PDF file",
+                    "flags": 2,
+                    "type": "file_path",
+                    "ext": "pdf",
+                    "value": ""
+                },
+                {
+                    "name": "output_pdf",
+                    "desc": "Output PDF file",
+                    "flags": 4,
+                    "type": "file_path",
+                    "ext": "pdf",
+                    "value": ""
+                },
+                {
+                    "title": "Language",
+                    "name": "language",
+                    "desc": "Language used for recognition. Englisg language is used as default",
+                    "type": "string",
+                    "flags": 1,
+                    "value": "eng",
+                    "set": [
+                        {
+                            "desc": "afr",
+                            "value": "afr"
+                        },
+                        {
+                            "desc": "amh",
+                            "value": "amh"
+                        },
+                        {
+                            "desc": "ara",
+                            "value": "ara"
+                        },
+                        {
+                            "desc": "asm",
+                            "value": "asm"
+                        },
+                        {
+                            "desc": "aze",
+                            "value": "aze"
+                        },
+                        {
+                            "desc": "aze_cyrl",
+                            "value": "aze_cyrl"
+                        },
+                        {
+                            "desc": "bel",
+                            "value": "bel"
+                        },
+                        {
+                            "desc": "ben",
+                            "value": "ben"
+                        },
+                        {
+                            "desc": "bod",
+                            "value": "bod"
+                        },
+                        {
+                            "desc": "bos",
+                            "value": "bos"
+                        },
+                        {
+                            "desc": "afr",
+                            "value": "bre"
+                        },
+                        {
+                            "desc": "bul",
+                            "value": "bul"
+                        },
+                        {
+                            "desc": "cat",
+                            "value": "cat"
+                        },
+                        {
+                            "desc": "ceb",
+                            "value": "ceb"
+                        },
+                        {
+                            "desc": "ces",
+                            "value": "ces"
+                        },
+                        {
+                            "desc": "chi_sim",
+                            "value": "chi_sim"
+                        },
+                        {
+                            "desc": "chi_sim_vert",
+                            "value": "chi_sim_vert"
+                        },
+                        {
+                            "desc": "chi_tra",
+                            "value": "chi_tra"
+                        },
+                        {
+                            "desc": "chi_tra_vert",
+                            "value": "chi_tra_vert"
+                        },
+                        {
+                            "desc": "chr",
+                            "value": "chr"
+                        },
+                        {
+                            "desc": "cos",
+                            "value": "cos"
+                        },
+                        {
+                            "desc": "cym",
+                            "value": "cym"
+                        },
+                        {
+                            "desc": "dan",
+                            "value": "dan"
+                        },
+                        {
+                            "desc": "deu",
+                            "value": "deu"
+                        },
+                        {
+                            "desc": "div",
+                            "value": "div"
+                        },
+                        {
+                            "desc": "dzo",
+                            "value": "dzo"
+                        },
+                        {
+                            "desc": "ell",
+                            "value": "ell"
+                        },
+                        {
+                            "desc": "eng",
+                            "value": "eng"
+                        },
+                        {
+                            "desc": "enm",
+                            "value": "enm"
+                        },
+                        {
+                            "desc": "epo",
+                            "value": "epo"
+                        },
+                        {
+                            "desc": "est",
+                            "value": "est"
+                        },
+                        {
+                            "desc": "eus",
+                            "value": "eus"
+                        },
+                        {
+                            "desc": "fao",
+                            "value": "fao"
+                        },
+                        {
+                            "desc": "fas",
+                            "value": "fas"
+                        },
+                        {
+                            "desc": "fil",
+                            "value": "fil"
+                        },
+                        {
+                            "desc": "fin",
+                            "value": "fin"
+                        },
+                        {
+                            "desc": "fra",
+                            "value": "fra"
+                        },
+                        {
+                            "desc": "frk",
+                            "value": "frk"
+                        },
+                        {
+                            "desc": "frm",
+                            "value": "frm"
+                        },
+                        {
+                            "desc": "fry",
+                            "value": "fry"
+                        },
+                        {
+                            "desc": "gla",
+                            "value": "gla"
+                        },
+                        {
+                            "desc": "gle",
+                            "value": "gle"
+                        },
+                        {
+                            "desc": "glg",
+                            "value": "glg"
+                        },
+                        {
+                            "desc": "grc",
+                            "value": "grc"
+                        },
+                        {
+                            "desc": "guj",
+                            "value": "guj"
+                        },
+                        {
+                            "desc": "hat",
+                            "value": "hat"
+                        },
+                        {
+                            "desc": "heb",
+                            "value": "heb"
+                        },
+                        {
+                            "desc": "hin",
+                            "value": "hin"
+                        },
+                        {
+                            "desc": "hrv",
+                            "value": "hrv"
+                        },
+                        {
+                            "desc": "hun",
+                            "value": "hun"
+                        },
+                        {
+                            "desc": "hye",
+                            "value": "hye"
+                        },
+                        {
+                            "desc": "iku",
+                            "value": "iku"
+                        },
+                        {
+                            "desc": "ind",
+                            "value": "ind"
+                        },
+                        {
+                            "desc": "isl",
+                            "value": "isl"
+                        },
+                        {
+                            "desc": "ita",
+                            "value": "ita"
+                        },
+                        {
+                            "desc": "ita_old",
+                            "value": "ita_old"
+                        },
+                        {
+                            "desc": "jav",
+                            "value": "jav"
+                        },
+                        {
+                            "desc": "jpn",
+                            "value": "jpn"
+                        },
+                        {
+                            "desc": "jpn_vert",
+                            "value": "jpn_vert"
+                        },
+                        {
+                            "desc": "kan",
+                            "value": "kan"
+                        },
+                        {
+                            "desc": "kat",
+                            "value": "kat"
+                        },
+                        {
+                            "desc": "kat_old",
+                            "value": "kat_old"
+                        },
+                        {
+                            "desc": "kaz",
+                            "value": "kaz"
+                        },
+                        {
+                            "desc": "khm",
+                            "value": "khm"
+                        },
+                        {
+                            "desc": "kir",
+                            "value": "kir"
+                        },
+                        {
+                            "desc": "kmr",
+                            "value": "kmr"
+                        },
+                        {
+                            "desc": "kor",
+                            "value": "kor"
+                        },
+                        {
+                            "desc": "kor_vert",
+                            "value": "kor_vert"
+                        },
+                        {
+                            "desc": "lao",
+                            "value": "lao"
+                        },
+                        {
+                            "desc": "lat",
+                            "value": "lat"
+                        },
+                        {
+                            "desc": "lav",
+                            "value": "lav"
+                        },
+                        {
+                            "desc": "lit",
+                            "value": "lit"
+                        },
+                        {
+                            "desc": "ltz",
+                            "value": "ltz"
+                        },
+                        {
+                            "desc": "a",
+                            "value": "mal"
+                        },
+                        {
+                            "desc": "mar",
+                            "value": "mar"
+                        },
+                        {
+                            "desc": "mkd",
+                            "value": "mkd"
+                        },
+                        {
+                            "desc": "mlt",
+                            "value": "mlt"
+                        },
+                        {
+                            "desc": "mon",
+                            "value": "mon"
+                        },
+                        {
+                            "desc": "mri",
+                            "value": "mri"
+                        },
+                        {
+                            "desc": "msa",
+                            "value": "msa"
+                        },
+                        {
+                            "desc": "mya",
+                            "value": "mya"
+                        },
+                        {
+                            "desc": "nep",
+                            "value": "nep"
+                        },
+                        {
+                            "desc": "nld",
+                            "value": "nld"
+                        },
+                        {
+                            "desc": "nor",
+                            "value": "nor"
+                        },
+                        {
+                            "desc": "oci",
+                            "value": "oci"
+                        },
+                        {
+                            "desc": "ori",
+                            "value": "ori"
+                        },
+                        {
+                            "desc": "pan",
+                            "value": "pan"
+                        },
+                        {
+                            "desc": "pol",
+                            "value": "pol"
+                        },
+                        {
+                            "desc": "por",
+                            "value": "por"
+                        },
+                        {
+                            "desc": "pus",
+                            "value": "pus"
+                        },
+                        {
+                            "desc": "que",
+                            "value": "que"
+                        },
+                        {
+                            "desc": "ron",
+                            "value": "ron"
+                        },
+                        {
+                            "desc": "rus",
+                            "value": "rus"
+                        },
+                        {
+                            "desc": "san",
+                            "value": "san"
+                        },
+                        {
+                            "desc": "sin",
+                            "value": "sin"
+                        },
+                        {
+                            "desc": "slk",
+                            "value": "slk"
+                        },
+                        {
+                            "desc": "slv",
+                            "value": "slv"
+                        },
+                        {
+                            "desc": "snd",
+                            "value": "snd"
+                        },
+                        {
+                            "desc": "spa",
+                            "value": "spa"
+                        },
+                        {
+                            "desc": "spa_old",
+                            "value": "spa_old"
+                        },
+                        {
+                            "desc": "sqi",
+                            "value": "sqi"
+                        },
+                        {
+                            "desc": "srp",
+                            "value": "srp"
+                        },
+                        {
+                            "desc": "srp_latn",
+                            "value": "srp_latn"
+                        },
+                        {
+                            "desc": "sun",
+                            "value": "sun"
+                        },
+                        {
+                            "desc": "swa",
+                            "value": "swa"
+                        },
+                        {
+                            "desc": "swe",
+                            "value": "swe"
+                        },
+                        {
+                            "desc": "syr",
+                            "value": "syr"
+                        },
+                        {
+                            "desc": "tam",
+                            "value": "tam"
+                        },
+                        {
+                            "desc": "tat",
+                            "value": "tat"
+                        },
+                        {
+                            "desc": "tel",
+                            "value": "tel"
+                        },
+                        {
+                            "desc": "tgk",
+                            "value": "tgk"
+                        },
+                        {
+                            "desc": "tha",
+                            "value": "tha"
+                        },
+                        {
+                            "desc": "tir",
+                            "value": "tir"
+                        },
+                        {
+                            "desc": "ton",
+                            "value": "ton"
+                        },
+                        {
+                            "desc": "tur",
+                            "value": "tur"
+                        },
+                        {
+                            "desc": "uig",
+                            "value": "uig"
+                        },
+                        {
+                            "desc": "ukr",
+                            "value": "ukr"
+                        },
+                        {
+                            "desc": "urd",
+                            "value": "urd"
+                        },
+                        {
+                            "desc": "uzb",
+                            "value": "uzb"
+                        },
+                        {
+                            "desc": "vie",
+                            "value": "vie"
+                        },
+                        {
+                            "desc": "yid",
+                            "value": "yid"
+                        },
+                        {
+                            "desc": "yor",
+                            "value": "yor"
+                        }
+                    ]
+                }
+            ]
         }
-      ],
-      "args": [
-        {
-          "name": "input_pdf",
-          "desc": "Input PDF file",
-          "flags": 2,
-          "type": "file_path",
-          "ext": "pdf",
-          "value": ""
-        },
-        {
-          "name": "output_pdf",
-          "desc": "Output PDF file",
-          "flags": 4,
-          "type": "file_path",
-          "ext": "pdf",
-          "value": ""
-        },
-        {
-          "title": "Language",
-          "name": "language",
-          "desc": "Language used for recognition. Englisg language is used as default",
-          "type": "string",
-          "flags": 1,
-          "value": "eng",
-          "set": [
-            {
-              "desc": "afr",
-              "value": "afr"
-            },
-            {
-              "desc": "amh",
-              "value": "amh"
-            },
-            {
-              "desc": "ara",
-              "value": "ara"
-            },
-            {
-              "desc": "asm",
-              "value": "asm"
-            },
-            {
-              "desc": "aze",
-              "value": "aze"
-            },
-            {
-              "desc": "aze_cyrl",
-              "value": "aze_cyrl"
-            },
-            {
-              "desc": "bel",
-              "value": "bel"
-            },
-            {
-              "desc": "ben",
-              "value": "ben"
-            },
-            {
-              "desc": "bod",
-              "value": "bod"
-            },
-            {
-              "desc": "bos",
-              "value": "bos"
-            },
-            {
-              "desc": "afr",
-              "value": "bre"
-            },
-            {
-              "desc": "bul",
-              "value": "bul"
-            },
-            {
-              "desc": "cat",
-              "value": "cat"
-            },
-            {
-              "desc": "ceb",
-              "value": "ceb"
-            },
-            {
-              "desc": "ces",
-              "value": "ces"
-            },
-            {
-              "desc": "chi_sim",
-              "value": "chi_sim"
-            },
-            {
-              "desc": "chi_sim_vert",
-              "value": "chi_sim_vert"
-            },
-            {
-              "desc": "chi_tra",
-              "value": "chi_tra"
-            },
-            {
-              "desc": "chi_tra_vert",
-              "value": "chi_tra_vert"
-            },
-            {
-              "desc": "chr",
-              "value": "chr"
-            },
-            {
-              "desc": "cos",
-              "value": "cos"
-            },
-            {
-              "desc": "cym",
-              "value": "cym"
-            },
-            {
-              "desc": "dan",
-              "value": "dan"
-            },
-            {
-              "desc": "deu",
-              "value": "deu"
-            },
-            {
-              "desc": "div",
-              "value": "div"
-            },
-            {
-              "desc": "dzo",
-              "value": "dzo"
-            },
-            {
-              "desc": "ell",
-              "value": "ell"
-            },
-            {
-              "desc": "eng",
-              "value": "eng"
-            },
-            {
-              "desc": "enm",
-              "value": "enm"
-            },
-            {
-              "desc": "epo",
-              "value": "epo"
-            },
-            {
-              "desc": "est",
-              "value": "est"
-            },
-            {
-              "desc": "eus",
-              "value": "eus"
-            },
-            {
-              "desc": "fao",
-              "value": "fao"
-            },
-            {
-              "desc": "fas",
-              "value": "fas"
-            },
-            {
-              "desc": "fil",
-              "value": "fil"
-            },
-            {
-              "desc": "fin",
-              "value": "fin"
-            },
-            {
-              "desc": "fra",
-              "value": "fra"
-            },
-            {
-              "desc": "frk",
-              "value": "frk"
-            },
-            {
-              "desc": "frm",
-              "value": "frm"
-            },
-            {
-              "desc": "fry",
-              "value": "fry"
-            },
-            {
-              "desc": "gla",
-              "value": "gla"
-            },
-            {
-              "desc": "gle",
-              "value": "gle"
-            },
-            {
-              "desc": "glg",
-              "value": "glg"
-            },
-            {
-              "desc": "grc",
-              "value": "grc"
-            },
-            {
-              "desc": "guj",
-              "value": "guj"
-            },
-            {
-              "desc": "hat",
-              "value": "hat"
-            },
-            {
-              "desc": "heb",
-              "value": "heb"
-            },
-            {
-              "desc": "hin",
-              "value": "hin"
-            },
-            {
-              "desc": "hrv",
-              "value": "hrv"
-            },
-            {
-              "desc": "hun",
-              "value": "hun"
-            },
-            {
-              "desc": "hye",
-              "value": "hye"
-            },
-            {
-              "desc": "iku",
-              "value": "iku"
-            },
-            {
-              "desc": "ind",
-              "value": "ind"
-            },
-            {
-              "desc": "isl",
-              "value": "isl"
-            },
-            {
-              "desc": "ita",
-              "value": "ita"
-            },
-            {
-              "desc": "ita_old",
-              "value": "ita_old"
-            },
-            {
-              "desc": "jav",
-              "value": "jav"
-            },
-            {
-              "desc": "jpn",
-              "value": "jpn"
-            },
-            {
-              "desc": "jpn_vert",
-              "value": "jpn_vert"
-            },
-            {
-              "desc": "kan",
-              "value": "kan"
-            },
-            {
-              "desc": "kat",
-              "value": "kat"
-            },
-            {
-              "desc": "kat_old",
-              "value": "kat_old"
-            },
-            {
-              "desc": "kaz",
-              "value": "kaz"
-            },
-            {
-              "desc": "khm",
-              "value": "khm"
-            },
-            {
-              "desc": "kir",
-              "value": "kir"
-            },
-            {
-              "desc": "kmr",
-              "value": "kmr"
-            },
-            {
-              "desc": "kor",
-              "value": "kor"
-            },
-            {
-              "desc": "kor_vert",
-              "value": "kor_vert"
-            },
-            {
-              "desc": "lao",
-              "value": "lao"
-            },
-            {
-              "desc": "lat",
-              "value": "lat"
-            },
-            {
-              "desc": "lav",
-              "value": "lav"
-            },
-            {
-              "desc": "lit",
-              "value": "lit"
-            },
-            {
-              "desc": "ltz",
-              "value": "ltz"
-            },
-            {
-              "desc": "a",
-              "value": "mal"
-            },
-            {
-              "desc": "mar",
-              "value": "mar"
-            },
-            {
-              "desc": "mkd",
-              "value": "mkd"
-            },
-            {
-              "desc": "mlt",
-              "value": "mlt"
-            },
-            {
-              "desc": "mon",
-              "value": "mon"
-            },
-            {
-              "desc": "mri",
-              "value": "mri"
-            },
-            {
-              "desc": "msa",
-              "value": "msa"
-            },
-            {
-              "desc": "mya",
-              "value": "mya"
-            },
-            {
-              "desc": "nep",
-              "value": "nep"
-            },
-            {
-              "desc": "nld",
-              "value": "nld"
-            },
-            {
-              "desc": "nor",
-              "value": "nor"
-            },
-            {
-              "desc": "oci",
-              "value": "oci"
-            },
-            {
-              "desc": "ori",
-              "value": "ori"
-            },
-            {
-              "desc": "pan",
-              "value": "pan"
-            },
-            {
-              "desc": "pol",
-              "value": "pol"
-            },
-            {
-              "desc": "por",
-              "value": "por"
-            },
-            {
-              "desc": "pus",
-              "value": "pus"
-            },
-            {
-              "desc": "que",
-              "value": "que"
-            },
-            {
-              "desc": "ron",
-              "value": "ron"
-            },
-            {
-              "desc": "rus",
-              "value": "rus"
-            },
-            {
-              "desc": "san",
-              "value": "san"
-            },
-            {
-              "desc": "sin",
-              "value": "sin"
-            },
-            {
-              "desc": "slk",
-              "value": "slk"
-            },
-            {
-              "desc": "slv",
-              "value": "slv"
-            },
-            {
-              "desc": "snd",
-              "value": "snd"
-            },
-            {
-              "desc": "spa",
-              "value": "spa"
-            },
-            {
-              "desc": "spa_old",
-              "value": "spa_old"
-            },
-            {
-              "desc": "sqi",
-              "value": "sqi"
-            },
-            {
-              "desc": "srp",
-              "value": "srp"
-            },
-            {
-              "desc": "srp_latn",
-              "value": "srp_latn"
-            },
-            {
-              "desc": "sun",
-              "value": "sun"
-            },
-            {
-              "desc": "swa",
-              "value": "swa"
-            },
-            {
-              "desc": "swe",
-              "value": "swe"
-            },
-            {
-              "desc": "syr",
-              "value": "syr"
-            },
-            {
-              "desc": "tam",
-              "value": "tam"
-            },
-            {
-              "desc": "tat",
-              "value": "tat"
-            },
-            {
-              "desc": "tel",
-              "value": "tel"
-            },
-            {
-              "desc": "tgk",
-              "value": "tgk"
-            },
-            {
-              "desc": "tha",
-              "value": "tha"
-            },
-            {
-              "desc": "tir",
-              "value": "tir"
-            },
-            {
-              "desc": "ton",
-              "value": "ton"
-            },
-            {
-              "desc": "tur",
-              "value": "tur"
-            },
-            {
-              "desc": "uig",
-              "value": "uig"
-            },
-            {
-              "desc": "ukr",
-              "value": "ukr"
-            },
-            {
-              "desc": "urd",
-              "value": "urd"
-            },
-            {
-              "desc": "uzb",
-              "value": "uzb"
-            },
-            {
-              "desc": "vie",
-              "value": "vie"
-            },
-            {
-              "desc": "yid",
-              "value": "yid"
-            },
-            {
-              "desc": "yor",
-              "value": "yor"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+    ]
 }
