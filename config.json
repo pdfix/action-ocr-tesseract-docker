@@ -1,4 +1,5 @@
 {
+    "title": "OCR Tesseract",
     "version": "v0.0.0",
     "actions": [
         {
@@ -8,7 +9,7 @@
             "icon": "image_search",
             "version": "v0.0.0",
             "category": "OCR",
-            "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" --rm pdfix/ocr-tesseract:latest --name \"${license_name}\" --key \"${license_key}\" ocr -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\"",
+            "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" --rm pdfix/ocr-tesseract:latest ocr --name \"${license_name}\" --key \"${license_key}\" -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\"",
             "args": [
                 {
                     "name": "input_pdf",
