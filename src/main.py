@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import traceback
 from pathlib import Path
 
 from tesseract import ocr
@@ -125,6 +126,7 @@ def main() -> None:  # noqa: D103
     try:
         args.func(args)
     except Exception as e:
+        print(traceback.format_exc(), file=sys.stderr)
         print(f"Failed to run the program: {e}", file=sys.stderr)
         sys.exit(1)
 
