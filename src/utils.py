@@ -1,6 +1,3 @@
-# Utils.py
-# Pdfix utils
-
 import math
 
 from pdfixsdk.Pdfix import PdfMatrix
