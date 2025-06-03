@@ -1,4 +1,5 @@
 import math
+from typing import Optional
 
 from pdfixsdk.Pdfix import PdfMatrix
 
@@ -104,6 +105,17 @@ iso_to_tesseract = {
 
 
 def pdf_matrix_concat(m: PdfMatrix, m1: PdfMatrix, prepend: bool) -> PdfMatrix:
+    """
+    Multiplies two matrices (m1 x m).
+
+    Args:
+        m (PdfMatrix): The first matrix to multiply.
+        m1 (PdfMatrix): The second matrix to multiply.
+        prepend (bool): Swaps matrixes.
+
+    Return:
+        Matrix created by m1 x m.
+    """
     ret = PdfMatrix()
     if prepend:
         swap = m
@@ -119,6 +131,17 @@ def pdf_matrix_concat(m: PdfMatrix, m1: PdfMatrix, prepend: bool) -> PdfMatrix:
 
 
 def pdf_matrix_rotate(m: PdfMatrix, radian: float, prepend: bool) -> PdfMatrix:
+    """
+    Creates rotation matrix and multiplies it with original matrix.
+
+    Args:
+        m (PdfMatrix): Original matrix.
+        radian (float): Angle for rotation matrix.
+        prepend (bool): Swaps matrixes.
+
+    Return:
+        Matrix created by rotation_matrix x m.
+    """
     cos_value = math.cos(radian)
     sin_value = math.sin(radian)
     m1 = PdfMatrix()
@@ -130,6 +153,19 @@ def pdf_matrix_rotate(m: PdfMatrix, radian: float, prepend: bool) -> PdfMatrix:
 
 
 def pdf_matrix_translate(m: PdfMatrix, x: float, y: float, prepend: bool) -> PdfMatrix:
+    """
+    Transforms the point [x, y] through the matrix m.
+
+    Args:
+        m (PdfMatrix): Original matrix.
+        x (float): X coordinate of 2D Point.
+        y (float): Y coordinate of 2D Point.
+        prepend (bool): Swaps x and y (last two members) in result matrix.
+
+    Return:
+        Original matrix m with changed last 2 members.
+
+    """
     ret = m
     if prepend:
         ret.e = m.e + x * m.a + y + m.c
@@ -140,6 +176,15 @@ def pdf_matrix_translate(m: PdfMatrix, x: float, y: float, prepend: bool) -> Pdf
 
 
 def pdf_matrix_inverse(orig: PdfMatrix) -> PdfMatrix:
+    """
+    Inverts a matrix.
+
+    Args:
+        orig (PdfMatrix): The matrix to invert.
+
+    Return:
+        Inverted matrix.
+    """
     inverse = PdfMatrix()
     i = orig.a * orig.d - orig.b * orig.c
     if abs(i) == 0:
@@ -155,6 +200,18 @@ def pdf_matrix_inverse(orig: PdfMatrix) -> PdfMatrix:
 
 
 def pdf_matrix_scale(m: PdfMatrix, sx: float, sy: float, prepend: bool) -> PdfMatrix:
+    """
+    Scales matrix using [sx, sy] values.
+
+    Args:
+        m (PdfMatrix): Matrix to scale.
+        sx (float): Scale in X axes using this number.
+        sy (float): Scale in Y axes using this number.
+        prepend (bool): Swaps 2nd and 3rd inner value of matrix.
+
+    Return:
+        Scaled matrix.
+    """
     m.a *= sx
     m.d *= sy
     if prepend:
@@ -167,7 +224,7 @@ def pdf_matrix_scale(m: PdfMatrix, sx: float, sy: float, prepend: bool) -> PdfMa
     return m
 
 
-def translate_iso_to_tesseract(iso_lang: str) -> str | None:
+def translate_iso_to_tesseract(iso_lang: str) -> Optional[str]:
     """
     Translate ISO language code to Tesseract language identifier.
 
