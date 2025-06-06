@@ -1,6 +1,5 @@
-import tempfile
+from typing import BinaryIO
 
-import pytesseract
 from pdfixsdk import (
     PdfImageParams,
     Pdfix,
@@ -15,52 +14,62 @@ from pdfixsdk import (
 from exceptions import PdfixException
 
 
-def render_pages(page: PdfPage, pdfix: Pdfix, lang: str) -> bytes:
+def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: BinaryIO) -> None:
     """
     Render a PDF page into a temporary file, which is then used for OCR.
 
     Args:
-        page (PdfPage): The PDF page to be processed for OCR.
         pdfix (Pdfix): The Pdfix SDK object.
-        lang (str): The language identifier for OCR.
+        page (PdfPage): The PDF page to be processed for OCR.
+        zoom (float): Zoom level for rendering the page.
+        temporary_file (BinaryIO): Temporary file for saving image.
 
     Returns:
-        Raw PDF bytes.
+        Raw PDF bytes (OCR page).
     """
-    zoom = 2.0
     page_view = page.AcquirePageView(zoom, kRotate0)
     if page_view is None:
-        raise PdfixException("Unable to acquire page view")
+        raise PdfixException(pdfix, "Unable to acquire page view")
 
-    width = page_view.GetDeviceWidth()
-    height = page_view.GetDeviceHeight()
-    # Create an image
-    image = pdfix.CreateImage(width, height, kImageDIBFormatArgb)
-    if image is None:
-        raise PdfixException("Unable to create image")
+    try:
+        width = page_view.GetDeviceWidth()
+        height = page_view.GetDeviceHeight()
 
-    # Render page
-    render_params = PdfPageRenderParams()
-    render_params.image = image
-    render_params.matrix = page_view.GetDeviceMatrix()
-    if not page.DrawContent(render_params):
-        raise PdfixException("Unable to draw content")
+        # Create an image
+        image = pdfix.CreateImage(width, height, kImageDIBFormatArgb)
+        if image is None:
+            raise PdfixException(pdfix, "Unable to create image")
 
-    # Create temp file for rendering
-    with tempfile.NamedTemporaryFile() as tmp:
-        # Save image to file
-        stm = pdfix.CreateFileStream(tmp.name + ".jpg", kPsTruncate)
-        if stm is None:
-            raise PdfixException("Unable to create file stream")
+        try:
+            # Render page
+            render_params = PdfPageRenderParams()
+            render_params.image = image
+            render_params.matrix = page_view.GetDeviceMatrix()
 
-        img_params = PdfImageParams()
-        img_params.format = kImageFormatJpg
-        img_params.quality = 100
-        if not image.SaveToStream(stm, img_params):
-            raise PdfixException("Unable to save image to stream")
+            if not page.DrawContent(render_params):
+                raise PdfixException(pdfix, "Unable to draw content")
 
-        return pytesseract.image_to_pdf_or_hocr(
-            tmp.name + ".jpg",
-            extension="pdf",
-            lang=lang,
-        )
+            # Save image to file
+            file_stream = pdfix.CreateFileStream(temporary_file.name + ".jpg", kPsTruncate)
+            if file_stream is None:
+                raise PdfixException(pdfix, "Unable to create file stream")
+
+            try:
+                img_params = PdfImageParams()
+                img_params.format = kImageFormatJpg
+                img_params.quality = 100
+
+                if not image.SaveToStream(file_stream, img_params):
+                    raise PdfixException(pdfix, "Unable to save image to stream")
+            except Exception:
+                raise
+            finally:
+                file_stream.Destroy()
+        except Exception:
+            raise
+        finally:
+            image.Destroy()
+    except Exception:
+        raise
+    finally:
+        page_view.Release()

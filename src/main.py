@@ -61,26 +61,30 @@ def get_pdfix_config(path: str) -> None:
 
 
 def run_ocr_subcommand(args) -> None:
+    zoom = 2.0
+
     if not os.path.isfile(args.input):
         raise Exception(f"Error: The input file '{args.input}' does not exist.")
 
     if args.input.lower().endswith(".pdf") and args.output.lower().endswith(".pdf"):
-        ocr(args.input, args.output, args.name, args.key, args.lang)
+        ocr_file(args.input, args.output, args.name, args.key, args.lang, zoom)
     else:
         raise Exception("Input and output file must be PDF")
 
 
-def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str) -> None:
+def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str, zoom: float) -> None:
     """
     Run OCR on a PDF file using Tesseract.
+
     Args:
         input_file (str): Path to the input PDF file.
         output_file (str): Path to the output PDF file.
         name (str): PDFix license name.
         key (str): PDFix license key.
         lang (str): Language identifier for OCR Tesseract.
+        zoom (float): Zoom level for rendering the page.
     """
-    ocr(input_file, output_file, name, key, lang)
+    ocr(input_file, output_file, name, key, lang, zoom)
 
 
 def main() -> None:  # noqa: D103
@@ -120,15 +124,18 @@ def main() -> None:  # noqa: D103
         if e.code == 0:  # This happens when --help is used, exit gracefully
             sys.exit(0)
         print("Failed to parse arguments. Please check the usage and try again.")
-        sys.exit(1)
+        sys.exit(e.code)
 
-    # Run subcommand
-    try:
-        args.func(args)
-    except Exception as e:
-        print(traceback.format_exc(), file=sys.stderr)
-        print(f"Failed to run the program: {e}", file=sys.stderr)
-        sys.exit(1)
+    if hasattr(args, "func"):
+        # Run subcommand
+        try:
+            args.func(args)
+        except Exception as e:
+            print(traceback.format_exc(), file=sys.stderr)
+            print(f"Failed to run the program: {e}", file=sys.stderr)
+            sys.exit(1)
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
