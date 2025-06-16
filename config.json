@@ -3,9 +3,9 @@
     "version": "v0.0.0",
     "actions": [
         {
-            "title": "OCR Tesseract",
+            "title": "OCR (Tesseract)",
             "name": "pdfix_ocr_tesseract",
-            "desc": "A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR",
+            "desc": "Automatically adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR.",
             "icon": "image_search",
             "version": "v0.0.0",
             "category": "OCR",
