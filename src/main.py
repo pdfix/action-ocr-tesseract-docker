@@ -26,7 +26,7 @@ def set_arguments(
             case "input":
                 parser.add_argument("--input", "-i", type=str, required=True, help="The input PDF file")
             case "key":
-                parser.add_argument("--key", type=str, help="PDFix license key")
+                parser.add_argument("--key", type=str, default="", nargs="?", help="PDFix license key")
             case "lang":
                 parser.add_argument(
                     "--lang",
@@ -35,7 +35,7 @@ def set_arguments(
                     help="Language identifier",
                 )
             case "name":
-                parser.add_argument("--name", type=str, help="PDFix license name")
+                parser.add_argument("--name", type=str, default="", nargs="?", help="PDFix license name")
             case "output":
                 parser.add_argument("--output", "-o", type=str, required=required_output, help=output_help)
 
