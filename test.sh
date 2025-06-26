@@ -63,6 +63,11 @@ else
     EXIT_STATUS=1
 fi
 
+info "Cleaning up temporary files from tests"
+rm -f $TEMPORARY_DIRECTORY/config.json
+rm -f $TEMPORARY_DIRECTORY/changement_climatique_ocr.pdf
+rmdir $(pwd)/$TEMPORARY_DIRECTORY
+
 info "Removing testing docker image"
 docker rmi $DOCKER_IMAGE
 
