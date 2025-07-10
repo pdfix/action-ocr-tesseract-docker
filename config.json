@@ -5,10 +5,11 @@
         {
             "title": "OCR (Tesseract)",
             "name": "pdfix_ocr_tesseract",
-            "desc": "Automatically adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR.",
-            "icon": "image_search",
+            "desc": "Automatically adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR [Local]",
             "version": "v0.0.0",
+            "icon": "image_search",
             "category": "OCR",
+            "local": "True",
             "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" --rm pdfix/ocr-tesseract:latest ocr --name \"${license_name}\" --key \"${license_key}\" -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\"",
             "args": [
                 {
