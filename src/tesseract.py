@@ -49,7 +49,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
     # Open doc
     doc = pdfix.OpenDoc(input_path, "")
     if doc is None:
-        raise PdfixException(pdfix, "Unable to open pdf")
+        raise PdfixException(pdfix, "Unable to open PDF")
 
     if lang == "":
         pdf_lang = translate_iso_to_tesseract(doc.GetLang())
@@ -84,7 +84,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
             try:
                 temp_doc = pdfix.OpenDoc(temp_path, "")
                 if temp_doc is None:
-                    raise PdfixException(pdfix, "Unable to open pdf")
+                    raise PdfixException(pdfix, "Unable to open PDF")
 
                 try:
                     # There is always only one page in the new PDF file
@@ -171,11 +171,11 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
             content = page.GetContent()
             form = content.AddNewForm(-1, xobj, matrix)
             if form is None:
-                raise PdfixException(pdfix, "Failed to add xobject to page")
+                raise PdfixException(pdfix, "Failed to add XObject to page")
         except Exception:
             raise
         finally:
             page.Release()
 
     if not doc.Save(output_path, kSaveFull):
-        raise PdfixException(pdfix, "Unable to save pdf")
+        raise PdfixException(pdfix, "Unable to save PDF")
