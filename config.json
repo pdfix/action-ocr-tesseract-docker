@@ -37,492 +37,492 @@
                     "value": "eng",
                     "set": [
                         {
-                            "desc": "afr",
-                            "value": "afr"
+                            "desc":"Afrikaans",
+                            "value":"afr"
                         },
                         {
-                            "desc": "amh",
-                            "value": "amh"
+                            "desc":"Amharic",
+                            "value":"amh"
                         },
                         {
-                            "desc": "ara",
-                            "value": "ara"
+                            "desc":"Arabic",
+                            "value":"ara"
                         },
                         {
-                            "desc": "asm",
-                            "value": "asm"
+                            "desc":"Assamese",
+                            "value":"asm"
                         },
                         {
-                            "desc": "aze",
-                            "value": "aze"
+                            "desc":"Azerbaijani",
+                            "value":"aze"
                         },
                         {
-                            "desc": "aze_cyrl",
-                            "value": "aze_cyrl"
+                            "desc":"Azerbaijani – Cyrillic",
+                            "value":"aze_cyrl"
                         },
                         {
-                            "desc": "bel",
-                            "value": "bel"
+                            "desc":"Belarusian",
+                            "value":"bel"
                         },
                         {
-                            "desc": "ben",
-                            "value": "ben"
+                            "desc":"Bengali",
+                            "value":"ben"
                         },
                         {
-                            "desc": "bod",
-                            "value": "bod"
+                            "desc":"Tibetan",
+                            "value":"bod"
                         },
                         {
-                            "desc": "bos",
-                            "value": "bos"
+                            "desc":"Bosnian",
+                            "value":"bos"
                         },
                         {
-                            "desc": "afr",
-                            "value": "bre"
+                            "desc":"Breton",
+                            "value":"bre"
                         },
                         {
-                            "desc": "bul",
-                            "value": "bul"
+                            "desc":"Bulgarian",
+                            "value":"bul"
                         },
                         {
-                            "desc": "cat",
-                            "value": "cat"
+                            "desc":"Catalan; Valencian",
+                            "value":"cat"
                         },
                         {
-                            "desc": "ceb",
-                            "value": "ceb"
+                            "desc":"Cebuano",
+                            "value":"ceb"
                         },
                         {
-                            "desc": "ces",
-                            "value": "ces"
+                            "desc":"Czech",
+                            "value":"ces"
                         },
                         {
-                            "desc": "chi_sim",
-                            "value": "chi_sim"
+                            "desc":"Chinese – Simplified",
+                            "value":"chi_sim"
                         },
                         {
-                            "desc": "chi_sim_vert",
-                            "value": "chi_sim_vert"
+                            "desc":"Chinese – Simplified Vertical",
+                            "value":"chi_sim_vert"
                         },
                         {
-                            "desc": "chi_tra",
-                            "value": "chi_tra"
+                            "desc":"Chinese – Traditional",
+                            "value":"chi_tra"
                         },
                         {
-                            "desc": "chi_tra_vert",
-                            "value": "chi_tra_vert"
+                            "desc":"Chinese – Traditional Vertical",
+                            "value":"chi_tra_vert"
                         },
                         {
-                            "desc": "chr",
-                            "value": "chr"
+                            "desc":"Cherokee",
+                            "value":"chr"
                         },
                         {
-                            "desc": "cos",
-                            "value": "cos"
+                            "desc":"Corsican",
+                            "value":"cos"
                         },
                         {
-                            "desc": "cym",
-                            "value": "cym"
+                            "desc":"Welsh",
+                            "value":"cym"
                         },
                         {
-                            "desc": "dan",
-                            "value": "dan"
+                            "desc":"Danish",
+                            "value":"dan"
                         },
                         {
-                            "desc": "deu",
-                            "value": "deu"
+                            "desc":"German",
+                            "value":"deu"
                         },
                         {
-                            "desc": "div",
-                            "value": "div"
+                            "desc":"Divehi",
+                            "value":"div"
                         },
                         {
-                            "desc": "dzo",
-                            "value": "dzo"
+                            "desc":"Dzongkha",
+                            "value":"dzo"
                         },
                         {
-                            "desc": "ell",
-                            "value": "ell"
+                            "desc":"Greek, Modern (1453–)",
+                            "value":"ell"
                         },
                         {
-                            "desc": "eng",
-                            "value": "eng"
+                            "desc":"English",
+                            "value":"eng"
                         },
                         {
-                            "desc": "enm",
-                            "value": "enm"
+                            "desc":"Middle English (ca. 1100–1500)",
+                            "value":"enm"
                         },
                         {
-                            "desc": "epo",
-                            "value": "epo"
+                            "desc":"Esperanto",
+                            "value":"epo"
                         },
                         {
-                            "desc": "est",
-                            "value": "est"
+                            "desc":"Estonian",
+                            "value":"est"
                         },
                         {
-                            "desc": "eus",
-                            "value": "eus"
+                            "desc":"Basque",
+                            "value":"eus"
                         },
                         {
-                            "desc": "fao",
-                            "value": "fao"
+                            "desc":"Faroese",
+                            "value":"fao"
                         },
                         {
-                            "desc": "fas",
-                            "value": "fas"
+                            "desc":"Persian",
+                            "value":"fas"
                         },
                         {
-                            "desc": "fil",
-                            "value": "fil"
+                            "desc":"Filipino",
+                            "value":"fil"
                         },
                         {
-                            "desc": "fin",
-                            "value": "fin"
+                            "desc":"Finnish",
+                            "value":"fin"
                         },
                         {
-                            "desc": "fra",
-                            "value": "fra"
+                            "desc":"French",
+                            "value":"fra"
                         },
                         {
-                            "desc": "frk",
-                            "value": "frk"
+                            "desc":"Frankish",
+                            "value":"frk"
                         },
                         {
-                            "desc": "frm",
-                            "value": "frm"
+                            "desc":"Old French",
+                            "value":"frm"
                         },
                         {
-                            "desc": "fry",
-                            "value": "fry"
+                            "desc":"Western Frisian",
+                            "value":"fry"
                         },
                         {
-                            "desc": "gla",
-                            "value": "gla"
+                            "desc":"Scottish Gaelic",
+                            "value":"gla"
                         },
                         {
-                            "desc": "gle",
-                            "value": "gle"
+                            "desc":"Irish",
+                            "value":"gle"
                         },
                         {
-                            "desc": "glg",
-                            "value": "glg"
+                            "desc":"Galician",
+                            "value":"glg"
                         },
                         {
-                            "desc": "grc",
-                            "value": "grc"
+                            "desc":"Ancient Greek (to 1453)",
+                            "value":"grc"
                         },
                         {
-                            "desc": "guj",
-                            "value": "guj"
+                            "desc":"Gujarati",
+                            "value":"guj"
                         },
                         {
-                            "desc": "hat",
-                            "value": "hat"
+                            "desc":"Haitian; Haitian Creole",
+                            "value":"hat"
                         },
                         {
-                            "desc": "heb",
-                            "value": "heb"
+                            "desc":"Hebrew",
+                            "value":"heb"
                         },
                         {
-                            "desc": "hin",
-                            "value": "hin"
+                            "desc":"Hindi",
+                            "value":"hin"
                         },
                         {
-                            "desc": "hrv",
-                            "value": "hrv"
+                            "desc":"Croatian",
+                            "value":"hrv"
                         },
                         {
-                            "desc": "hun",
-                            "value": "hun"
+                            "desc":"Hungarian",
+                            "value":"hun"
                         },
                         {
-                            "desc": "hye",
-                            "value": "hye"
+                            "desc":"Armenian",
+                            "value":"hye"
                         },
                         {
-                            "desc": "iku",
-                            "value": "iku"
+                            "desc":"Inuktitut",
+                            "value":"iku"
                         },
                         {
-                            "desc": "ind",
-                            "value": "ind"
+                            "desc":"Indonesian",
+                            "value":"ind"
                         },
                         {
-                            "desc": "isl",
-                            "value": "isl"
+                            "desc":"Icelandic",
+                            "value":"isl"
                         },
                         {
-                            "desc": "ita",
-                            "value": "ita"
+                            "desc":"Italian",
+                            "value":"ita"
                         },
                         {
-                            "desc": "ita_old",
-                            "value": "ita_old"
+                            "desc":"Old Italian",
+                            "value":"ita_old"
                         },
                         {
-                            "desc": "jav",
-                            "value": "jav"
+                            "desc":"Javanese",
+                            "value":"jav"
                         },
                         {
-                            "desc": "jpn",
-                            "value": "jpn"
+                            "desc":"Japanese",
+                            "value":"jpn"
                         },
                         {
-                            "desc": "jpn_vert",
-                            "value": "jpn_vert"
+                            "desc":"Japanese Vertical",
+                            "value":"jpn_vert"
                         },
                         {
-                            "desc": "kan",
-                            "value": "kan"
+                            "desc":"Kannada",
+                            "value":"kan"
                         },
                         {
-                            "desc": "kat",
-                            "value": "kat"
+                            "desc":"Georgian",
+                            "value":"kat"
                         },
                         {
-                            "desc": "kat_old",
-                            "value": "kat_old"
+                            "desc":"Old Georgian",
+                            "value":"kat_old"
                         },
                         {
-                            "desc": "kaz",
-                            "value": "kaz"
+                            "desc":"Kazakh",
+                            "value":"kaz"
                         },
                         {
-                            "desc": "khm",
-                            "value": "khm"
+                            "desc":"Khmer (Central Khmer)",
+                            "value":"khm"
                         },
                         {
-                            "desc": "kir",
-                            "value": "kir"
+                            "desc":"Kyrgyz; Kirghiz",
+                            "value":"kir"
                         },
                         {
-                            "desc": "kmr",
-                            "value": "kmr"
+                            "desc":"Kurdish (Kurmanji)",
+                            "value":"kmr"
                         },
                         {
-                            "desc": "kor",
-                            "value": "kor"
+                            "desc":"Korean",
+                            "value":"kor"
                         },
                         {
-                            "desc": "kor_vert",
-                            "value": "kor_vert"
+                            "desc":"Korean Vertical",
+                            "value":"kor_vert"
                         },
                         {
-                            "desc": "lao",
-                            "value": "lao"
+                            "desc":"Lao",
+                            "value":"lao"
                         },
                         {
-                            "desc": "lat",
-                            "value": "lat"
+                            "desc":"Latin",
+                            "value":"lat"
                         },
                         {
-                            "desc": "lav",
-                            "value": "lav"
+                            "desc":"Latvian",
+                            "value":"lav"
                         },
                         {
-                            "desc": "lit",
-                            "value": "lit"
+                            "desc":"Lithuanian",
+                            "value":"lit"
                         },
                         {
-                            "desc": "ltz",
-                            "value": "ltz"
+                            "desc":"Luxembourgish",
+                            "value":"ltz"
                         },
                         {
-                            "desc": "a",
-                            "value": "mal"
+                            "desc":"Malayalam",
+                            "value":"mal"
                         },
                         {
-                            "desc": "mar",
-                            "value": "mar"
+                            "desc":"Marathi",
+                            "value":"mar"
                         },
                         {
-                            "desc": "mkd",
-                            "value": "mkd"
+                            "desc":"Macedonian",
+                            "value":"mkd"
                         },
                         {
-                            "desc": "mlt",
-                            "value": "mlt"
+                            "desc":"Maltese",
+                            "value":"mlt"
                         },
                         {
-                            "desc": "mon",
-                            "value": "mon"
+                            "desc":"Mongolian",
+                            "value":"mon"
                         },
                         {
-                            "desc": "mri",
-                            "value": "mri"
+                            "desc":"Māori",
+                            "value":"mri"
                         },
                         {
-                            "desc": "msa",
-                            "value": "msa"
+                            "desc":"Malay",
+                            "value":"msa"
                         },
                         {
-                            "desc": "mya",
-                            "value": "mya"
+                            "desc":"Burmese",
+                            "value":"mya"
                         },
                         {
-                            "desc": "nep",
-                            "value": "nep"
+                            "desc":"Nepali",
+                            "value":"nep"
                         },
                         {
-                            "desc": "nld",
-                            "value": "nld"
+                            "desc":"Dutch; Flemish",
+                            "value":"nld"
                         },
                         {
-                            "desc": "nor",
-                            "value": "nor"
+                            "desc":"Norwegian",
+                            "value":"nor"
                         },
                         {
-                            "desc": "oci",
-                            "value": "oci"
+                            "desc":"Occitan (post 1500)",
+                            "value":"oci"
                         },
                         {
-                            "desc": "ori",
-                            "value": "ori"
+                            "desc":"Oriya (Odia)",
+                            "value":"ori"
                         },
                         {
-                            "desc": "pan",
-                            "value": "pan"
+                            "desc":"Punjabi; Panjabi",
+                            "value":"pan"
                         },
                         {
-                            "desc": "pol",
-                            "value": "pol"
+                            "desc":"Polish",
+                            "value":"pol"
                         },
                         {
-                            "desc": "por",
-                            "value": "por"
+                            "desc":"Portuguese",
+                            "value":"por"
                         },
                         {
-                            "desc": "pus",
-                            "value": "pus"
+                            "desc":"Pushto; Pashto",
+                            "value":"pus"
                         },
                         {
-                            "desc": "que",
-                            "value": "que"
+                            "desc":"Quechua",
+                            "value":"que"
                         },
                         {
-                            "desc": "ron",
-                            "value": "ron"
+                            "desc":"Romanian; Moldavian",
+                            "value":"ron"
                         },
                         {
-                            "desc": "rus",
-                            "value": "rus"
+                            "desc":"Russian",
+                            "value":"rus"
                         },
                         {
-                            "desc": "san",
-                            "value": "san"
+                            "desc":"Sanskrit",
+                            "value":"san"
                         },
                         {
-                            "desc": "sin",
-                            "value": "sin"
+                            "desc":"Sinhala; Sinhalese",
+                            "value":"sin"
                         },
                         {
-                            "desc": "slk",
-                            "value": "slk"
+                            "desc":"Slovak",
+                            "value":"slk"
                         },
                         {
-                            "desc": "slv",
-                            "value": "slv"
+                            "desc":"Slovenian",
+                            "value":"slv"
                         },
                         {
-                            "desc": "snd",
-                            "value": "snd"
+                            "desc":"Sindhi",
+                            "value":"snd"
                         },
                         {
-                            "desc": "spa",
-                            "value": "spa"
+                            "desc":"Spanish; Castilian",
+                            "value":"spa"
                         },
                         {
-                            "desc": "spa_old",
-                            "value": "spa_old"
+                            "desc":"Old Spanish",
+                            "value":"spa_old"
                         },
                         {
-                            "desc": "sqi",
-                            "value": "sqi"
+                            "desc":"Albanian",
+                            "value":"sqi"
                         },
                         {
-                            "desc": "srp",
-                            "value": "srp"
+                            "desc":"Serbian",
+                            "value":"srp"
                         },
                         {
-                            "desc": "srp_latn",
-                            "value": "srp_latn"
+                            "desc":"Serbian – Latin",
+                            "value":"srp_latn"
                         },
                         {
-                            "desc": "sun",
-                            "value": "sun"
+                            "desc":"Sundanese",
+                            "value":"sun"
                         },
                         {
-                            "desc": "swa",
-                            "value": "swa"
+                            "desc":"Swahili",
+                            "value":"swa"
                         },
                         {
-                            "desc": "swe",
-                            "value": "swe"
+                            "desc":"Swedish",
+                            "value":"swe"
                         },
                         {
-                            "desc": "syr",
-                            "value": "syr"
+                            "desc":"Syriac",
+                            "value":"syr"
                         },
                         {
-                            "desc": "tam",
-                            "value": "tam"
+                            "desc":"Tamil",
+                            "value":"tam"
                         },
                         {
-                            "desc": "tat",
-                            "value": "tat"
+                            "desc":"Tatar",
+                            "value":"tat"
                         },
                         {
-                            "desc": "tel",
-                            "value": "tel"
+                            "desc":"Telugu",
+                            "value":"tel"
                         },
                         {
-                            "desc": "tgk",
-                            "value": "tgk"
+                            "desc":"Tajik",
+                            "value":"tgk"
                         },
                         {
-                            "desc": "tha",
-                            "value": "tha"
+                            "desc":"Thai",
+                            "value":"tha"
                         },
                         {
-                            "desc": "tir",
-                            "value": "tir"
+                            "desc":"Tigrinya",
+                            "value":"tir"
                         },
                         {
-                            "desc": "ton",
-                            "value": "ton"
+                            "desc":"Tongan",
+                            "value":"ton"
                         },
                         {
-                            "desc": "tur",
-                            "value": "tur"
+                            "desc":"Turkish",
+                            "value":"tur"
                         },
                         {
-                            "desc": "uig",
-                            "value": "uig"
+                            "desc":"Uighur; Uyghur",
+                            "value":"uig"
                         },
                         {
-                            "desc": "ukr",
-                            "value": "ukr"
+                            "desc":"Ukrainian",
+                            "value":"ukr"
                         },
                         {
-                            "desc": "urd",
-                            "value": "urd"
+                            "desc":"Urdu",
+                            "value":"urd"
                         },
                         {
-                            "desc": "uzb",
-                            "value": "uzb"
+                            "desc":"Uzbek",
+                            "value":"uzb"
                         },
                         {
-                            "desc": "vie",
-                            "value": "vie"
+                            "desc":"Vietnamese",
+                            "value":"vie"
                         },
                         {
-                            "desc": "yid",
-                            "value": "yid"
+                            "desc":"Yiddish",
+                            "value":"yid"
                         },
                         {
-                            "desc": "yor",
-                            "value": "yor"
+                            "desc":"Yoruba",
+                            "value":"yor"
                         }
                     ]
                 }
