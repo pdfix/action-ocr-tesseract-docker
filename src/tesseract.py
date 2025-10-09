@@ -56,7 +56,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
         # default "eng" if pdf does not have lang identifier or is not supported
         lang = "eng" if pdf_lang is None else pdf_lang
 
-    print(f"Using langauge: {lang}")
+    print(f"Using language: {lang}")
 
     doc_num_pages = doc.GetNumPages()
 
