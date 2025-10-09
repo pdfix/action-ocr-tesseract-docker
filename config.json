@@ -31,7 +31,7 @@
                 {
                     "title": "Language",
                     "name": "language",
-                    "desc": "Language used for recognition. Englisg language is used as default",
+                    "desc": "Language used for recognition. English language is used as default",
                     "type": "string",
                     "flags": 1,
                     "value": "eng",
