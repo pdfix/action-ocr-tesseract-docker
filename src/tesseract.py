@@ -110,7 +110,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
 
                         xobj = doc.CreateXObjectFromPage(temp_page)
                         if xobj is None:
-                            raise PdfixFailedToOcrException("Failed to create XObject from page")
+                            raise PdfixFailedToOcrException(pdfix, "Failed to create XObject from page")
 
                     except Exception:
                         raise
