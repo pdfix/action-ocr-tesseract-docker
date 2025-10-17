@@ -11,7 +11,7 @@ from pdfixsdk import (
     kRotate0,
 )
 
-from exceptions import PdfixException
+from exceptions import PdfixFailedToRenderException
 
 
 def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: BinaryIO) -> None:
@@ -29,7 +29,7 @@ def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: Binary
     """
     page_view = page.AcquirePageView(zoom, kRotate0)
     if page_view is None:
-        raise PdfixException(pdfix, "Unable to acquire page view")
+        raise PdfixFailedToRenderException(pdfix, "Unable to acquire page view")
 
     try:
         width = page_view.GetDeviceWidth()
@@ -38,7 +38,7 @@ def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: Binary
         # Create an image
         image = pdfix.CreateImage(width, height, kImageDIBFormatArgb)
         if image is None:
-            raise PdfixException(pdfix, "Unable to create image")
+            raise PdfixFailedToRenderException(pdfix, "Unable to create image")
 
         try:
             # Render page
@@ -47,12 +47,12 @@ def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: Binary
             render_params.matrix = page_view.GetDeviceMatrix()
 
             if not page.DrawContent(render_params):
-                raise PdfixException(pdfix, "Unable to draw content")
+                raise PdfixFailedToRenderException(pdfix, "Unable to draw content")
 
             # Save image to file
             file_stream = pdfix.CreateFileStream(temporary_file.name + ".jpg", kPsTruncate)
             if file_stream is None:
-                raise PdfixException(pdfix, "Unable to create file stream")
+                raise PdfixFailedToRenderException(pdfix, "Unable to create file stream")
 
             try:
                 img_params = PdfImageParams()
@@ -60,7 +60,7 @@ def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: Binary
                 img_params.quality = 100
 
                 if not image.SaveToStream(file_stream, img_params):
-                    raise PdfixException(pdfix, "Unable to save image to stream")
+                    raise PdfixFailedToRenderException(pdfix, "Unable to save image to stream")
             except Exception:
                 raise
             finally:

@@ -5,6 +5,13 @@ import threading
 import traceback
 from pathlib import Path
 
+from exceptions import (
+    EC_ARG_GENERAL,
+    MESSAGE_ARG_GENERAL,
+    ArgumentInputMissingException,
+    ArgumentInputPdfOutputPdfException,
+    ExpectedException,
+)
 from image_update import DockerImageContainerUpdateChecker
 from tesseract import ocr
 
@@ -66,12 +73,12 @@ def run_ocr_subcommand(args) -> None:
     zoom = 2.0
 
     if not os.path.isfile(args.input):
-        raise Exception(f"Error: The input file '{args.input}' does not exist.")
+        raise ArgumentInputMissingException()
 
     if args.input.lower().endswith(".pdf") and args.output.lower().endswith(".pdf"):
         ocr_file(args.input, args.output, args.name, args.key, args.lang, zoom)
     else:
-        raise Exception("Input and output file must be PDF")
+        raise ArgumentInputPdfOutputPdfException()
 
 
 def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str, zoom: float) -> None:
@@ -123,10 +130,11 @@ def main() -> None:  # noqa: D103
     try:
         args = parser.parse_args()
     except SystemExit as e:
-        if e.code == 0:  # This happens when --help is used, exit gracefully
-            sys.exit(0)
-        print("Failed to parse arguments. Please check the usage and try again.")
-        sys.exit(e.code)
+        if e.code != 0:
+            print(MESSAGE_ARG_GENERAL, file=sys.stderr)
+            sys.exit(EC_ARG_GENERAL)
+        # This happens when --help is used, exit gracefully
+        sys.exit(0)
 
     if hasattr(args, "func"):
         # Check for updates only when help is not checked
@@ -138,6 +146,9 @@ def main() -> None:  # noqa: D103
         # Run subcommand
         try:
             args.func(args)
+        except ExpectedException as e:
+            print(e.message, file=sys.stderr)
+            sys.exit(e.error_code)
         except Exception as e:
             print(traceback.format_exc(), file=sys.stderr)
             print(f"Failed to run the program: {e}", file=sys.stderr)

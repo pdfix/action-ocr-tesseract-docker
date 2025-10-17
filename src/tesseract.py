@@ -13,7 +13,12 @@ from pdfixsdk.Pdfix import (
 )
 from tqdm import tqdm
 
-from exceptions import PdfixException
+from exceptions import (
+    PdfixFailedToOcrException,
+    PdfixFailedToOpenException,
+    PdfixFailedToSaveException,
+    PdfixInitializeException,
+)
 from page_renderer import render_page
 from utils_sdk import (
     authorize_sdk,
@@ -42,14 +47,14 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
 
     pdfix = GetPdfix()
     if pdfix is None:
-        raise Exception("Pdfix Initialization fail")
+        raise PdfixInitializeException()
 
     authorize_sdk(pdfix, license_name, license_key)
 
     # Open doc
     doc = pdfix.OpenDoc(input_path, "")
     if doc is None:
-        raise PdfixException(pdfix, "Unable to open PDF")
+        raise PdfixFailedToOpenException(pdfix, input_path)
 
     if lang == "":
         pdf_lang = translate_iso_to_tesseract(doc.GetLang())
@@ -64,7 +69,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
     for i in tqdm(range(doc_num_pages), desc="Processing pages"):
         page: PdfPage = doc.AcquirePage(i)
         if page is None:
-            raise PdfixException(pdfix, "Unable to acquire page")
+            raise PdfixFailedToOcrException(pdfix, "Unable to acquire page")
 
         try:
             # Create temp file for rendering
@@ -84,7 +89,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
             try:
                 temp_doc = pdfix.OpenDoc(temp_path, "")
                 if temp_doc is None:
-                    raise PdfixException(pdfix, "Unable to open PDF")
+                    raise PdfixFailedToOcrException(pdfix, "Unable to open PDF")
 
                 try:
                     # There is always only one page in the new PDF file
@@ -105,7 +110,7 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
 
                         xobj = doc.CreateXObjectFromPage(temp_page)
                         if xobj is None:
-                            raise PdfixException("Failed to create XObject from page")
+                            raise PdfixFailedToOcrException("Failed to create XObject from page")
 
                     except Exception:
                         raise
@@ -171,11 +176,11 @@ def ocr(input_path: str, output_path: str, license_name: str, license_key: str, 
             content = page.GetContent()
             form = content.AddNewForm(-1, xobj, matrix)
             if form is None:
-                raise PdfixException(pdfix, "Failed to add XObject to page")
+                raise PdfixFailedToOcrException(pdfix, "Failed to add XObject to page")
         except Exception:
             raise
         finally:
             page.Release()
 
     if not doc.Save(output_path, kSaveFull):
-        raise PdfixException(pdfix, "Unable to save PDF")
+        raise PdfixFailedToSaveException(pdfix, output_path)
