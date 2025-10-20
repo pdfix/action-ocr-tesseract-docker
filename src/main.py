@@ -129,12 +129,19 @@ def main() -> None:  # noqa: D103
     # Parse arguments
     try:
         args = parser.parse_args()
+    except ExpectedException as e:
+        print(e.message, file=sys.stderr)
+        sys.exit(e.error_code)
     except SystemExit as e:
         if e.code != 0:
             print(MESSAGE_ARG_GENERAL, file=sys.stderr)
             sys.exit(EC_ARG_GENERAL)
         # This happens when --help is used, exit gracefully
         sys.exit(0)
+    except Exception as e:
+        print(traceback.format_exc(), file=sys.stderr)
+        print(f"Failed to run the program: {e}", file=sys.stderr)
+        sys.exit(1)
 
     if hasattr(args, "func"):
         # Check for updates only when help is not checked
