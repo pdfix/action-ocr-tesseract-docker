@@ -1,14 +1,14 @@
 import math
-from typing import Optional
+from typing import Any, Optional
 
-from pdfixsdk import Pdfix, PdfMatrix
+from pdfixsdk import Pdfix, PdfMatrix, PsAccountAuthorization
 
 from exceptions import PdfixActivationException, PdfixAuthorizationException
 
-pi = 3.1415926535897932384626433832795
+pi: float = 3.1415926535897932384626433832795
 
 # Mapping from ISO 639-1 language codes to Tesseract language identifiers
-iso_to_tesseract = {
+iso_to_tesseract: dict[str, str] = {
     "af": "afr",  # Afrikaans
     "am": "amh",  # Amharic
     "ar": "ara",  # Arabic
@@ -116,7 +116,7 @@ def authorize_sdk(pdfix: Pdfix, license_name: Optional[str], license_key: Option
         license_key (string): Pdfix sdk license key
     """
     if license_name and license_key:
-        authorization = pdfix.GetAccountAuthorization()
+        authorization: PsAccountAuthorization = pdfix.GetAccountAuthorization()
         if not authorization.Authorize(license_name, license_key):
             raise PdfixAuthorizationException(pdfix)
     elif license_key:
@@ -138,7 +138,7 @@ def pdf_matrix_concat(m: PdfMatrix, m1: PdfMatrix, prepend: bool) -> PdfMatrix:
     Return:
         Matrix created by m1 x m.
     """
-    ret = PdfMatrix()
+    ret: PdfMatrix = PdfMatrix()
     if prepend:
         swap = m
         m = m1
@@ -164,9 +164,9 @@ def pdf_matrix_rotate(m: PdfMatrix, radian: float, prepend: bool) -> PdfMatrix:
     Return:
         Matrix created by rotation_matrix x m.
     """
-    cos_value = math.cos(radian)
-    sin_value = math.sin(radian)
-    m1 = PdfMatrix()
+    cos_value: float = math.cos(radian)
+    sin_value: float = math.sin(radian)
+    m1: PdfMatrix = PdfMatrix()
     m1.a = cos_value
     m1.b = sin_value
     m1.c = -sin_value
@@ -188,7 +188,7 @@ def pdf_matrix_translate(m: PdfMatrix, x: float, y: float, prepend: bool) -> Pdf
         Original matrix m with changed last 2 members.
 
     """
-    ret = m
+    ret: PdfMatrix = m
     if prepend:
         ret.e = m.e + x * m.a + y + m.c
         ret.f = m.f + y * m.d + x * m.b
@@ -207,11 +207,11 @@ def pdf_matrix_inverse(orig: PdfMatrix) -> PdfMatrix:
     Return:
         Inverted matrix.
     """
-    inverse = PdfMatrix()
-    i = orig.a * orig.d - orig.b * orig.c
+    inverse: PdfMatrix = PdfMatrix()
+    i: int | Any = orig.a * orig.d - orig.b * orig.c
     if abs(i) == 0:
         return inverse
-    j = -i
+    j: int | Any = -i
     inverse.a = orig.d / i
     inverse.b = orig.b / j
     inverse.c = orig.c / j
@@ -257,5 +257,5 @@ def translate_iso_to_tesseract(iso_lang: str) -> Optional[str]:
         Corresponding Tesseract language identifier (str) or None if not found.
     """
     # Extract the first part of the ISO language code (e.g., 'en' from 'en-US')
-    iso_lang_part = iso_lang.split("-")[0].lower()
+    iso_lang_part: str = iso_lang.split("-")[0].lower()
     return iso_to_tesseract.get(iso_lang_part)
