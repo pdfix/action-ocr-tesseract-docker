@@ -9,7 +9,7 @@
             "version": "v0.0.0",
             "icon": "image_search",
             "category": "OCR",
-            "local": "True",
+            "local": true,
             "program": "docker run -v \"${working_directory}:/data\" --rm pdfix/ocr-tesseract:latest ocr --name \"${license_name}\" --key \"${license_key}\" -i \"/data/${input_pdf}\" -o \"/data/${output_pdf}\" --lang \"${language}\"",
             "args": [
                 {
