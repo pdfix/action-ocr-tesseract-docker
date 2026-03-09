@@ -1,4 +1,10 @@
-CONFIG_FILE = "config.json"
-DOCKER_NAMESPACE = "pdfix"
-DOCKER_REPOSITORY = "ocr-tesseract"
-DOCKER_IMAGE = f"{DOCKER_NAMESPACE}/{DOCKER_REPOSITORY}"
+CONFIG_FILE: str = "config.json"
+DOCKER_NAMESPACE: str = "pdfix"
+DOCKER_REPOSITORY: str = "ocr-tesseract"
+DOCKER_IMAGE: str = f"{DOCKER_NAMESPACE}/{DOCKER_REPOSITORY}"
+PERCENT_OCR: float = 0.8
+PERCENT_RENDER: float = 0.1
+PERCENT_XOBJECT: float = 0.1
+PROGRESS_FIRST_STEP: int = 50  # Initialize (open document, read page count, etc.)
+PROGRESS_SECOND_STEP: int = 900  # Run OCR (+ rendering + xobject)
+PROGRESS_THIRD_STEP: int = 50  # Saving document
