@@ -1,5 +1,5 @@
 pdfix-sdk==8.2.0
 pytesseract==0.3.10
-requests==2.32.4
+requests==2.33.1
 tqdm==4.66.4
-types-requests==2.32.0.20250515
+types-requests==2.33.0.20260408
