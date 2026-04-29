@@ -539,7 +539,7 @@
                 "25": "Failed to save PDF document.",
                 "26": "Failed to OCR document."
             },
-            "progress_regex": "^[^:]+:\\s+(?<progress>\\d{1,3})%"
+            "progress_regex": "^(?<text>[^:]+):\\s+(?<progress>\\d{1,3})%"
         }
     ]
 }
