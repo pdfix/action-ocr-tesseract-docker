@@ -1,60 +1,61 @@
-# OCR Tesseract 
+# OCR Tesseract
 
 A Docker image that adds an OCR text layer to scanned PDF files using PDFix SDK and Tesseract OCR.
 
 ## Table of Contents
 
 - [OCR Tesseract](#ocr-tesseract)
-  - [Table of Contents](#table-of-contents)
-  - [Getting Started](#getting-started)
-  - [Run using Command Line Interface](#run-using-command-line-interface)
-  - [Exporting Configuration for Integration](#exporting-configuration-for-integration)
-  - [License \& libraries used](#license--libraries-used)
-  - [Help \& Support](#help--support)
-  
+  - [Getting started](#getting-started)
+  - [Usage](#usage)
+  - [Commands](#commands)
+  - [Arguments](#arguments)
+  - [Examples](#examples)
+  - [Help \& support](#help--support)
+  - [Licenses](#licenses)
 
-## Getting Started
+## Getting started
 
-To use this Docker application, you'll need to have Docker installed on your system. If Docker is not installed, please follow the instructions on the [official Docker website](https://docs.docker.com/get-docker/) to install it.
+You need Docker installed. The first run downloads the image and may take longer than later runs.
 
-## Run using Command Line Interface
+## Usage
 
-To run docker container as CLI you should share the folder with PDF to process using `-v` parameter. In this example it's current folder.
-
-```bash
-docker run -v $(pwd):/data/ -w /data/ pdfix/ocr-tesseract:latest ocr -i scanned.pdf -o ocr.pdf --lang eng 
-```
-
-With PDFix License add these arguments.
+Mount a folder into the container and run a subcommand:
 
 ```bash
---name ${LICENSE_NAME} --key ${LICENSE_KEY}
+docker run --rm -v "$(pwd)":/data -w /data pdfix/ocr-tesseract:latest <command> [options]
 ```
 
-First run will pull the docker image, which may take some time. Make your own image for more advanced use.
+## Commands
 
-For more detailed information about the available command-line arguments, you can run the following command:
+- `ocr`: OCR a scanned PDF (PDF → PDF)
+
+## Arguments
+
+### `ocr`
+
+| Option | Required | Type / expected value | Description |
+|---|:---:|---|---|
+| `--input`, `-i` | yes | Path to an existing `.pdf` file | Input PDF |
+| `--output`, `-o` | yes | Path for the output `.pdf` file | Output PDF |
+| `--lang` | no | Tesseract language code string (e.g. `eng`); empty uses default handling | OCR language |
+| `--name` | no | String (PDFix account license name) | PDFix license name |
+| `--key` | no | String (PDFix account license key) | PDFix license key |
+
+## Examples
+
+OCR a scanned PDF:
 
 ```bash
-docker run --rm pdfix/ocr-tesseract:latest --help
+docker run --rm -v "$(pwd)":/data -w /data pdfix/ocr-tesseract:latest \
+  ocr --name "${LICENSE_NAME}" --key "${LICENSE_KEY}" \
+  -i /data/scanned.pdf -o /data/ocr.pdf --lang eng
 ```
 
-### Exporting Configuration for Integration
+## Help & support
 
-To export the configuration JSON file, use the following command:
+For PDFix SDK licensing or issues, contact `support@pdfix.net`.
 
-```bash
-docker run -v $(pwd):/data -w /data --rm pdfix/ocr-tesseract:latest config -o config.json
-```
+## Licenses
 
-## License & libraries used
-
-- PDFix SDK - https://pdfix.net/terms
-- OCR Tesseract - https://github.com/tesseract-ocr/tesseract/
-
-Trial version of the PDFix SDK may apply a watermark on the page and redact random parts of the PDF including the scanned image in background. Contact us to get an evaluation or production license.
-
-## Help & Support
-
-To obtain a PDFix SDK license or report an issue please contact us at support@pdfix.net.
-For more information visit https://pdfix.net
+- [PDFix Terms](https://pdfix.net/terms)
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract/)
