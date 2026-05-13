@@ -4,3 +4,4 @@ pytesseract==0.3.10
 requests==2.33.1
 tqdm==4.66.4
 types-requests==2.33.0.20260408
+urllib3==2.7.0
