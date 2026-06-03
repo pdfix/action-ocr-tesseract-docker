@@ -4,11 +4,17 @@ import uuid
 from typing import Any, BinaryIO, Optional, cast
 
 import pytesseract
-from pdfixsdk import PdfDoc, Pdfix, PdfRect, PdsContent, PdsForm, PdsPageObject, PdsStream
-from pdfixsdk.Pdfix import (
+from pdfixsdk import (
     GetPdfix,
+    PdfDoc,
+    Pdfix,
     PdfMatrix,
     PdfPage,
+    PdfRect,
+    PdsContent,
+    PdsForm,
+    PdsPageObject,
+    PdsStream,
     kPdsPageText,
     kSaveFull,
 )
