@@ -58,4 +58,5 @@ For PDFix SDK licensing or issues, contact `support@pdfix.net`.
 ## Licenses
 
 - [PDFix Terms](https://pdfix.net/terms)
-- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract/)
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) — [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+

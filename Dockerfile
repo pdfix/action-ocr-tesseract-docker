@@ -27,4 +27,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY config.json /usr/tesseract-ocr/
 COPY src/ /usr/tesseract-ocr/src/
 
+# License
+COPY THIRD_PARTY_LICENSES.md /THIRD_PARTY_LICENSES.md
+LABEL license="https://pdfix.net/terms (PDFix SDK) and Apache-2.0 (Tesseract OCR)"
+
 ENTRYPOINT ["/usr/tesseract-ocr/venv/bin/python3", "/usr/tesseract-ocr/src/main.py"]
