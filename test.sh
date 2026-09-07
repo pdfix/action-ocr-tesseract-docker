@@ -63,9 +63,19 @@ else
     EXIT_STATUS=1
 fi
 
+info "Test #04: Run ocr-content with template params"
+docker run --rm $PLATFORM -v $(pwd):/data -w /data $DOCKER_IMAGE ocr-content -i example/changement_climatique.pdf -o $TEMPORARY_DIRECTORY/changement_climatique_ocr_content_template.pdf --params tests/params_content_template.json > /dev/null
+if [ -f "$(pwd)/$TEMPORARY_DIRECTORY/changement_climatique_ocr_content_template.pdf" ]; then
+    success "passed"
+else
+    error "ocr-content with template params failed on example/changement_climatique.pdf"
+    EXIT_STATUS=1
+fi
+
 info "Cleaning up temporary files from tests"
 rm -f $TEMPORARY_DIRECTORY/config.json
 rm -f $TEMPORARY_DIRECTORY/changement_climatique_ocr.pdf
+rm -f $TEMPORARY_DIRECTORY/changement_climatique_ocr_content_template.pdf
 rmdir $(pwd)/$TEMPORARY_DIRECTORY
 
 info "Removing testing docker image"

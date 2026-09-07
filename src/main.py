@@ -1,9 +1,12 @@
 import argparse
+import json
 import os
 import sys
+import tempfile
 import threading
 import traceback
 from pathlib import Path
+from typing import Any
 
 from constants import CONFIG_FILE
 from exceptions import (
@@ -12,8 +15,11 @@ from exceptions import (
     ArgumentInputMissingException,
     ArgumentInputPdfOutputPdfException,
     ExpectedException,
+    InvalidRegexOrTemplateException,
 )
 from image_update import DockerImageContainerUpdateChecker
+from ocr_content import OcrContent
+from params_parser import ParamsParser
 from tesseract import ocr
 
 
@@ -46,6 +52,10 @@ def set_arguments(
                 parser.add_argument("--name", type=str, default="", nargs="?", help="PDFix license name")
             case "output":
                 parser.add_argument("--output", "-o", type=str, required=required_output, help=output_help)
+            case "params":
+                parser.add_argument(
+                    "--params", type=str, required=True, help="Path to JSON file with filled parameters."
+                )
 
 
 def run_config_subcommand(args) -> None:
@@ -97,6 +107,70 @@ def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str, 
     ocr(input_file, output_file, name, key, lang, zoom)
 
 
+def run_ocr_content_subcommand(args) -> None:
+    zoom: float = 2.0
+
+    if not os.path.isfile(args.input):
+        raise ArgumentInputMissingException(args.input)
+
+    if not (args.input.lower().endswith(".pdf") and args.output.lower().endswith(".pdf")):
+        raise ArgumentInputPdfOutputPdfException()
+
+    params_parser = ParamsParser(args.params)
+    params_parser.parse()
+    object_types: Any = params_parser.params.get("object_types")
+    if isinstance(object_types, str):
+        ocr_content_file(
+            args.input,
+            args.output,
+            args.name,
+            args.key,
+            args.lang,
+            zoom,
+            object_types,
+        )
+    elif isinstance(object_types, dict):
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", suffix=".json") as template_file:
+            with open(template_file.name, "w", encoding="utf-8") as template_file_write:
+                json.dump(object_types, template_file_write)
+            ocr_content_file(
+                args.input,
+                args.output,
+                args.name,
+                args.key,
+                args.lang,
+                zoom,
+                Path(template_file.name),
+            )
+    else:
+        raise InvalidRegexOrTemplateException()
+
+
+def ocr_content_file(
+    input_file: str,
+    output_file: str,
+    name: str,
+    key: str,
+    lang: str,
+    zoom: float,
+    regex_template: str | Path,
+) -> None:
+    """
+    Run content-filtered OCR on a PDF file using Tesseract.
+
+    Args:
+        input_file (str): Path to the input PDF file.
+        output_file (str): Path to the output PDF file.
+        name (str): PDFix license name.
+        key (str): PDFix license key.
+        lang (str): Language identifier for OCR Tesseract.
+        zoom (float): Zoom level for rendering the page.
+        regex_template (str | Path): Regex or path to a template JSON file.
+    """
+    ocr_content = OcrContent(name, key, input_file, output_file, regex_template, lang, zoom)
+    ocr_content.ocr_content()
+
+
 def main() -> None:  # noqa: D103
     parser = argparse.ArgumentParser(
         description="Process a PDF or image with Tesseract OCR",
@@ -126,6 +200,19 @@ def main() -> None:  # noqa: D103
     )
     set_arguments(ocr_subparser, ["name", "key", "input", "output", "lang"], True, "The output PDF file")
     ocr_subparser.set_defaults(func=run_ocr_subcommand)
+
+    # OCR content subparser
+    ocr_content_subparser = subparsers.add_parser(
+        "ocr-content",
+        help="Run OCR on filtered page content and place a text Form XObject per page.",
+    )
+    set_arguments(
+        ocr_content_subparser,
+        ["name", "key", "input", "output", "lang", "params"],
+        True,
+        "The output PDF file",
+    )
+    ocr_content_subparser.set_defaults(func=run_ocr_content_subcommand)
 
     # Parse arguments
     try:

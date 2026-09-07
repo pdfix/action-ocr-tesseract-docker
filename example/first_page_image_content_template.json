@@ -1,0 +1,20 @@
+{
+    "template": {
+        "object_update": [
+            {
+                "comment": "Select image page objects on the first page only",
+                "query": {
+                    "$and": [
+                        {
+                            "$page_num": "1"
+                        }
+                    ],
+                    "param": [
+                        "pds_image"
+                    ]
+                },
+                "statement": "$if"
+            }
+        ]
+    }
+}
