@@ -160,9 +160,7 @@ class OcrContent:
                                     )
                                     progress_bar.update(ocr_step_units)
 
-                                xobj, temp_page_box = self._create_text_xobject_from_ocr(
-                                    pdfix, doc, temp_pdf_page
-                                )
+                                xobj, temp_page_box = self._create_text_xobject_from_ocr(pdfix, doc, temp_pdf_page)
                                 self._add_xobject_to_page(pdfix, page, xobj, temp_page_box)
                                 progress_bar.update(xobject_step_units)
                             finally:
@@ -348,9 +346,7 @@ class OcrContent:
         finally:
             os.remove(temp_path)
 
-    def _add_xobject_to_page(
-        self, pdfix: Pdfix, page: PdfPage, xobj: PdsStream, temp_page_box: PdfRect
-    ) -> None:
+    def _add_xobject_to_page(self, pdfix: Pdfix, page: PdfPage, xobj: PdsStream, temp_page_box: PdfRect) -> None:
         """
         Place the OCR Form XObject at the end of the page using the full-page matrix.
 

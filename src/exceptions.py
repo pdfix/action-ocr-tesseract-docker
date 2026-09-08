@@ -109,6 +109,4 @@ class PdfixFailedToOcrException(PdfixException):
 
 class PdfixFailedToLoadTemplateException(PdfixException):
     def __init__(self, pdfix: Pdfix, message: str = "") -> None:
-        super().__init__(
-            pdfix, EC_PDFIX_FAILED_TO_LOAD_TEMPLATE, f"{MESSAGE_PDFIX_FAILED_TO_LOAD_TEMPLATE} {message}"
-        )
+        super().__init__(pdfix, EC_PDFIX_FAILED_TO_LOAD_TEMPLATE, f"{MESSAGE_PDFIX_FAILED_TO_LOAD_TEMPLATE} {message}")
