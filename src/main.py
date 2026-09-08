@@ -19,8 +19,8 @@ from exceptions import (
 )
 from image_update import DockerImageContainerUpdateChecker
 from ocr_content import OcrContent
+from ocr_document import OcrDocument
 from params_parser import ParamsParser
-from tesseract import ocr
 
 
 def set_arguments(
@@ -104,7 +104,8 @@ def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str, 
         lang (str): Language identifier for OCR Tesseract.
         zoom (float): Zoom level for rendering the page.
     """
-    ocr(input_file, output_file, name, key, lang, zoom)
+    ocr_document = OcrDocument(name, key, input_file, output_file, lang, zoom)
+    ocr_document.ocr()
 
 
 def run_ocr_content_subcommand(args) -> None:

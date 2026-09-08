@@ -1,29 +1,22 @@
 import logging
-import os
 import tempfile
-import uuid
 from pathlib import Path
-from typing import Any, BinaryIO, Optional, cast
+from typing import BinaryIO, Optional, cast
 
 import pytesseract
 from pdfixsdk import (
     GetPdfix,
     PdfDoc,
     Pdfix,
-    PdfMatrix,
     PdfPage,
     PdfPageObjectEnumProcType,
-    PdfRect,
     PdfTemplateQuery,
     PdsContent,
-    PdsForm,
     PdsPageObject,
-    PdsStream,
     PsFileStream,
     kDataFormatJson,
     kEnumForms,
     kEnumResultContinue,
-    kPdsPageText,
     kPsReadOnly,
     kSaveFull,
     kStateDefault,
@@ -47,20 +40,14 @@ from exceptions import (
     PdfixInitializeException,
 )
 from logger import get_logger
+from ocr_base import OcrBase
 from page_renderer import render_page
-from utils_sdk import (
-    authorize_sdk,
-    pdf_matrix_rotate,
-    pdf_matrix_scale,
-    pdf_matrix_translate,
-    pi,
-    translate_iso_to_tesseract,
-)
+from utils_sdk import authorize_sdk
 
 logger: logging.Logger = get_logger("app_logger")
 
 
-class OcrContent:
+class OcrContent(OcrBase):
     def __init__(
         self,
         license_name: str,
@@ -83,13 +70,8 @@ class OcrContent:
             lang (str): Tesseract language identifier (empty uses document lang).
             zoom (float): Zoom level for page rendering.
         """
-        self.license_name: str = license_name
-        self.license_key: str = license_key
-        self.input_path: str = input_path
-        self.output_path: str = output_path
+        super().__init__(license_name, license_key, input_path, output_path, lang, zoom)
         self.regex_template: str | Path = regex_template
-        self.lang: str = lang
-        self.zoom: float = zoom
 
         self.document: Optional[PdfDoc] = None
         self.template_query: Optional[PdfTemplateQuery] = None
@@ -116,10 +98,7 @@ class OcrContent:
                 raise PdfixFailedToOpenException(pdfix, self.input_path)
 
             try:
-                lang: str = self.lang
-                if lang == "":
-                    pdf_lang = translate_iso_to_tesseract(doc.GetLang())
-                    lang = "eng" if pdf_lang is None else pdf_lang
+                lang: str = self._resolve_lang(doc)
                 print(f"Using language: {lang}")
 
                 template_query: Optional[PdfTemplateQuery] = self._create_template_query(pdfix, doc)
@@ -160,8 +139,7 @@ class OcrContent:
                                     )
                                     progress_bar.update(ocr_step_units)
 
-                                xobj, temp_page_box = self._create_text_xobject_from_ocr(pdfix, doc, temp_pdf_page)
-                                self._add_xobject_to_page(pdfix, page, xobj, temp_page_box)
+                                self._place_ocr_form(pdfix, doc, page, temp_pdf_page)
                                 progress_bar.update(xobject_step_units)
                             finally:
                                 self._reset_render_flags(doc, page)
@@ -289,104 +267,3 @@ class OcrContent:
 
         page_object_enum_proc = PdfPageObjectEnumProcType(enum_proc)
         doc.EnumPageObjects(content, None, kEnumForms, page_object_enum_proc, None)
-
-    def _create_text_xobject_from_ocr(
-        self, pdfix: Pdfix, doc: PdfDoc, temp_pdf_page: bytes
-    ) -> tuple[PdsStream, PdfRect]:
-        """
-        Open Tesseract PDF output, keep text objects only, create a Form XObject.
-
-        Args:
-            pdfix (Pdfix): Pdfix SDK instance.
-            doc (PdfDoc): Destination document that owns the XObject.
-            temp_pdf_page (bytes): PDF bytes returned by Tesseract.
-
-        Returns:
-            Tuple of (form XObject stream, Tesseract page crop box).
-        """
-        temp_path: str = f"{tempfile.gettempdir()}{str(uuid.uuid4())}.pdf"
-        with open(temp_path, "w+b") as f:
-            f.write(temp_pdf_page)
-
-        try:
-            temp_doc: Optional[PdfDoc] = pdfix.OpenDoc(temp_path, "")
-            if temp_doc is None:
-                raise PdfixFailedToOcrException(pdfix, "Unable to open OCR PDF")
-
-            try:
-                temp_page: Optional[PdfPage] = temp_doc.AcquirePage(0)
-                if temp_page is None:
-                    raise PdfixFailedToOcrException(pdfix, "Unable to acquire OCR page")
-
-                try:
-                    temp_page_box: PdfRect = temp_page.GetCropBox()
-
-                    temp_page_content: Optional[PdsContent] = temp_page.GetContent()
-                    if temp_page_content is None:
-                        raise PdfixFailedToOcrException(pdfix, "Failed to obtain content from OCR page")
-
-                    for j in reversed(range(temp_page_content.GetNumObjects())):
-                        obj: Optional[PdsPageObject] = temp_page_content.GetObject(j)
-                        if not obj:
-                            continue
-                        if obj.GetObjectType() != kPdsPageText:
-                            temp_page_content.RemoveObject(obj)
-
-                    temp_page.SetContent()
-
-                    xobj: Optional[PdsStream] = doc.CreateXObjectFromPage(temp_page)
-                    if xobj is None:
-                        raise PdfixFailedToOcrException(pdfix, "Failed to create XObject from OCR page")
-
-                    return xobj, temp_page_box
-                finally:
-                    temp_page.Release()
-            finally:
-                temp_doc.Close()
-        finally:
-            os.remove(temp_path)
-
-    def _add_xobject_to_page(self, pdfix: Pdfix, page: PdfPage, xobj: PdsStream, temp_page_box: PdfRect) -> None:
-        """
-        Place the OCR Form XObject at the end of the page using the full-page matrix.
-
-        Args:
-            pdfix (Pdfix): Pdfix SDK instance.
-            page (PdfPage): Target page.
-            xobj (PdsStream): Form XObject from OCR.
-            temp_page_box (PdfRect): Crop box of the Tesseract page.
-        """
-        crop_box: PdfRect = page.GetCropBox()
-        rotate: float = page.GetRotate()
-
-        width: int | Any = crop_box.right - crop_box.left
-        width_tmp: int | Any = temp_page_box.right - temp_page_box.left
-        height: int | Any = crop_box.top - crop_box.bottom
-        height_tmp: int | Any = temp_page_box.top - temp_page_box.bottom
-
-        if rotate == 90 or rotate == 270:
-            width_tmp, height_tmp = height_tmp, width_tmp
-
-        scale_x: float | Any = width / width_tmp
-        scale_y: float | Any = height / height_tmp
-
-        rotate_quads: float = (page.GetRotate() / 90) % 4
-        matrix: PdfMatrix = PdfMatrix()
-        matrix = pdf_matrix_rotate(matrix, rotate_quads * pi / 2, False)
-        matrix = pdf_matrix_scale(matrix, scale_x, scale_y, False)
-        if rotate_quads == 0:
-            matrix = pdf_matrix_translate(matrix, crop_box.left, crop_box.bottom, False)
-        elif rotate_quads == 1:
-            matrix = pdf_matrix_translate(matrix, crop_box.right, crop_box.bottom, False)
-        elif rotate_quads == 2:
-            matrix = pdf_matrix_translate(matrix, crop_box.right, crop_box.top, False)
-        elif rotate_quads == 3:
-            matrix = pdf_matrix_translate(matrix, crop_box.left, crop_box.top, False)
-
-        content: Optional[PdsContent] = page.GetContent()
-        if content is None:
-            raise PdfixFailedToOcrException(pdfix, "Failed to obtain content from page")
-
-        form: Optional[PdsForm] = content.AddNewForm(-1, xobj, matrix)
-        if form is None:
-            raise PdfixFailedToOcrException(pdfix, "Failed to add XObject to page")
