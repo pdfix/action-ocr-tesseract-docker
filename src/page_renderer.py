@@ -48,12 +48,14 @@ def render_page(pdfix: Pdfix, page: PdfPage, zoom: float, temporary_file: Binary
             render_params: PdfPageRenderParams = PdfPageRenderParams()
             render_params.image = image
             render_params.matrix = page_view.GetDeviceMatrix()
+            render_params.render_flags = 0  # omit kRenderAnnot = no annotations
 
             if not page.DrawContent(render_params):
                 raise PdfixFailedToRenderException(pdfix, "Unable to draw content")
 
             # Save image to file
-            file_stream: Optional[PsFileStream] = pdfix.CreateFileStream(temporary_file.name + ".jpg", kPsTruncate)
+            file_path: str = f"{temporary_file.name}.jpg"
+            file_stream: Optional[PsFileStream] = pdfix.CreateFileStream(file_path, kPsTruncate)
             if file_stream is None:
                 raise PdfixFailedToRenderException(pdfix, "Unable to create file stream")
 

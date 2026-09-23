@@ -168,7 +168,7 @@ def ocr_content_file(
         zoom (float): Zoom level for rendering the page.
         regex_template (str | Path): Regex or path to a template JSON file.
     """
-    ocr_content = OcrContent(name, key, input_file, output_file, regex_template, lang, zoom)
+    ocr_content = OcrContent(name, key, input_file, output_file, lang, zoom, regex_template)
     ocr_content.ocr_content()
 
 

@@ -54,9 +54,9 @@ class OcrContent(OcrBase):
         license_key: str,
         input_path: str,
         output_path: str,
-        regex_template: str | Path,
         lang: str,
         zoom: float,
+        regex_template: str | Path,
     ) -> None:
         """
         Initialize OCR for filtered page content in a PDF document.
@@ -84,8 +84,6 @@ class OcrContent(OcrBase):
         total_progress_count: int = PROGRESS_FIRST_STEP + PROGRESS_SECOND_STEP + PROGRESS_THIRD_STEP
         with tqdm(total=total_progress_count) as progress_bar:
             progress_bar.set_description("Initializing")
-
-            print(f"Available config files: {pytesseract.get_languages(config='')}")
 
             pdfix: Optional[Pdfix] = GetPdfix()
             if pdfix is None:
@@ -127,13 +125,14 @@ class OcrContent(OcrBase):
                                 continue
 
                             self._set_hit_render_flags(doc, page, hits)
+
                             try:
                                 with tempfile.NamedTemporaryFile() as tmp:
                                     render_page(pdfix, page, self.zoom, cast(BinaryIO, tmp.file))
                                     progress_bar.update(render_step_units)
 
                                     temp_pdf_page = pytesseract.image_to_pdf_or_hocr(
-                                        tmp.name + ".jpg",
+                                        f"{tmp.name}.jpg",
                                         extension="pdf",
                                         lang=lang,
                                     )
