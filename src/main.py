@@ -190,7 +190,7 @@ def main() -> None:  # noqa: D103
         config_subparser,
         ["output"],
         False,
-        "Output to save the config JSON file. Application output" + "is used if not provided",
+        "Output to save the config JSON file. Application output is used if not provided",
     )
     config_subparser.set_defaults(func=run_config_subcommand)
 

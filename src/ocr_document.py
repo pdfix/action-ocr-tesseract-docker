@@ -77,7 +77,7 @@ class OcrDocument(OcrBase):
                             progress_bar.update(render_step_units)
 
                             temp_pdf_page = pytesseract.image_to_pdf_or_hocr(
-                                tmp.name + ".jpg",
+                                f"{tmp.name}.jpg",
                                 extension="pdf",
                                 lang=lang,
                             )
