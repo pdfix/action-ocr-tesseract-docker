@@ -18,6 +18,7 @@ from exceptions import (
     InvalidRegexOrTemplateException,
 )
 from image_update import DockerImageContainerUpdateChecker
+from object_filter import DEFAULT_OBJECT_TYPES, selects_all_page_objects
 from ocr_content import OcrContent
 from ocr_document import OcrDocument
 from params_parser import ParamsParser
@@ -54,7 +55,10 @@ def set_arguments(
                 parser.add_argument("--output", "-o", type=str, required=required_output, help=output_help)
             case "params":
                 parser.add_argument(
-                    "--params", type=str, required=True, help="Path to JSON file with filled parameters."
+                    "--params",
+                    type=str,
+                    default="",
+                    help="Path to JSON file with filled parameters. Without it all page content is OCR-ed.",
                 )
 
 
@@ -84,12 +88,37 @@ def run_ocr_subcommand(args) -> None:
     zoom: float = 2.0
 
     if not os.path.isfile(args.input):
-        raise ArgumentInputMissingException()
+        raise ArgumentInputMissingException(args.input)
 
-    if args.input.lower().endswith(".pdf") and args.output.lower().endswith(".pdf"):
-        ocr_file(args.input, args.output, args.name, args.key, args.lang, zoom)
-    else:
+    if not (args.input.lower().endswith(".pdf") and args.output.lower().endswith(".pdf")):
         raise ArgumentInputPdfOutputPdfException()
+
+    object_types: Any = DEFAULT_OBJECT_TYPES
+    if args.params:
+        params_parser = ParamsParser(args.params)
+        params_parser.parse()
+        object_types = params_parser.params.get("object_types", DEFAULT_OBJECT_TYPES)
+
+    # Filter selecting every page object is a no-op: skip content enumeration (fast for heavy pages)
+    if selects_all_page_objects(object_types):
+        ocr_file(args.input, args.output, args.name, args.key, args.lang, zoom)
+    elif isinstance(object_types, str):
+        ocr_content_file(args.input, args.output, args.name, args.key, args.lang, zoom, object_types)
+    elif isinstance(object_types, dict):
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", suffix=".json") as template_file:
+            with open(template_file.name, "w", encoding="utf-8") as template_file_write:
+                json.dump(object_types, template_file_write)
+            ocr_content_file(
+                args.input,
+                args.output,
+                args.name,
+                args.key,
+                args.lang,
+                zoom,
+                Path(template_file.name),
+            )
+    else:
+        raise InvalidRegexOrTemplateException()
 
 
 def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str, zoom: float) -> None:
@@ -106,45 +135,6 @@ def ocr_file(input_file: str, output_file: str, name: str, key: str, lang: str, 
     """
     ocr_document = OcrDocument(name, key, input_file, output_file, lang, zoom)
     ocr_document.ocr()
-
-
-def run_ocr_content_subcommand(args) -> None:
-    zoom: float = 2.0
-
-    if not os.path.isfile(args.input):
-        raise ArgumentInputMissingException(args.input)
-
-    if not (args.input.lower().endswith(".pdf") and args.output.lower().endswith(".pdf")):
-        raise ArgumentInputPdfOutputPdfException()
-
-    params_parser = ParamsParser(args.params)
-    params_parser.parse()
-    object_types: Any = params_parser.params.get("object_types")
-    if isinstance(object_types, str):
-        ocr_content_file(
-            args.input,
-            args.output,
-            args.name,
-            args.key,
-            args.lang,
-            zoom,
-            object_types,
-        )
-    elif isinstance(object_types, dict):
-        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", suffix=".json") as template_file:
-            with open(template_file.name, "w", encoding="utf-8") as template_file_write:
-                json.dump(object_types, template_file_write)
-            ocr_content_file(
-                args.input,
-                args.output,
-                args.name,
-                args.key,
-                args.lang,
-                zoom,
-                Path(template_file.name),
-            )
-    else:
-        raise InvalidRegexOrTemplateException()
 
 
 def ocr_content_file(
@@ -197,23 +187,10 @@ def main() -> None:  # noqa: D103
     # OCR subparser
     ocr_subparser = subparsers.add_parser(
         "ocr",
-        help="Run ocr in PDF document with predefined language.",
+        help="Run OCR in PDF document with predefined language, optionally only on filtered page content.",
     )
-    set_arguments(ocr_subparser, ["name", "key", "input", "output", "lang"], True, "The output PDF file")
+    set_arguments(ocr_subparser, ["name", "key", "input", "output", "lang", "params"], True, "The output PDF file")
     ocr_subparser.set_defaults(func=run_ocr_subcommand)
-
-    # OCR content subparser
-    ocr_content_subparser = subparsers.add_parser(
-        "ocr-content",
-        help="Run OCR on filtered page content and place a text Form XObject per page.",
-    )
-    set_arguments(
-        ocr_content_subparser,
-        ["name", "key", "input", "output", "lang", "params"],
-        True,
-        "The output PDF file",
-    )
-    ocr_content_subparser.set_defaults(func=run_ocr_content_subcommand)
 
     # Parse arguments
     try:

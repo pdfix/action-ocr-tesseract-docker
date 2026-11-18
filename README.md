@@ -28,8 +28,7 @@ docker run --rm -v "$(pwd)":/data -w /data pdfix/ocr-tesseract:latest <command> 
 
 ## Commands
 
-- `ocr`: OCR a scanned PDF page-by-page (PDF → PDF)
-- `ocr-content`: OCR filtered page content and place an invisible text Form XObject per page (PDF → PDF)
+- `ocr`: OCR a PDF page-by-page and place an invisible text Form XObject per page (PDF → PDF). With `--params`, only filtered page content is OCR-ed.
 
 ## Arguments
 
@@ -45,21 +44,19 @@ docker run --rm -v "$(pwd)":/data -w /data pdfix/ocr-tesseract:latest <command> 
 
 ### `ocr`
 
-Uses the [Common](#common) arguments.
-
-### `ocr-content`
-
 Uses the [Common](#common) arguments, plus:
 
 | Option | Required | Type / expected value | Description |
 |---|:---:|---|---|
-| `--params` | yes | Path to a `.json` file | Object filter parameters (see [Params JSON](#params-json)) |
+| `--params` | no | Path to a `.json` file | Object filter parameters (see [Params JSON](#params-json)); without it all page content is OCR-ed |
 
 ## Params JSON
 
-`--params` is a JSON array of parameter objects with at least `name` and `value`. For `ocr-content`, `object_types` is an ECMAScript regex matching page object types (e.g. `"^pds_image$"`, or `".*"` for all), or a template `object_update` object.
+`--params` is a JSON array of parameter objects with at least `name` and `value`. `object_types` is an ECMAScript regex matching page object types (`pds_text`, `pds_path`, `pds_image`, `pds_shading`, `pds_form`; e.g. `"^pds_image$"`, or `".*"` for all), or a template `object_update` object. Default is `".*"`.
 
-See `tests/params_content.json`, `tests/params_content_template.json`, and `example/first_page_image_content_template.json` (first-page images; load into Desktop params).
+Only the selected objects are rendered for OCR. When the filter selects every page object type (e.g. `".*"`, or a template with a single `$if` rule listing all types in `param` and no other condition), the whole page is rendered directly without enumerating page content, which is much faster on pages with a lot of content.
+
+See `tests/params_content_template.json` and `example/first_page_image_content_template.json` (first-page images; load into Desktop params).
 
 ## Examples
 
@@ -75,7 +72,7 @@ OCR filtered page content:
 
 ```bash
 docker run --rm -v "$(pwd)":/data -w /data pdfix/ocr-tesseract:latest \
-  ocr-content --name "${LICENSE_NAME}" --key "${LICENSE_KEY}" \
+  ocr --name "${LICENSE_NAME}" --key "${LICENSE_KEY}" \
   -i /data/input.pdf -o /data/output.pdf --lang eng \
   --params /data/params_content.json
 ```
