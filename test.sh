@@ -54,21 +54,21 @@ else
     EXIT_STATUS=1
 fi
 
-info "Test #03: Run ocr-tesseract"
+info "Test #03: Run OCR"
 docker run --rm $PLATFORM -v $(pwd):/data -w /data $DOCKER_IMAGE ocr -i example/changement_climatique.pdf -o $TEMPORARY_DIRECTORY/changement_climatique_ocr.pdf > /dev/null
 if [ -f "$(pwd)/$TEMPORARY_DIRECTORY/changement_climatique_ocr.pdf" ]; then
     success "passed"
 else
-    error "ocr-tesseract failed on example/changement_climatique.pdf"
+    error "OCR failed on example/changement_climatique.pdf"
     EXIT_STATUS=1
 fi
 
-info "Test #04: Run ocr with template params"
+info "Test #04: Run OCR with template params"
 docker run --rm $PLATFORM -v $(pwd):/data -w /data $DOCKER_IMAGE ocr -i example/changement_climatique.pdf -o $TEMPORARY_DIRECTORY/changement_climatique_ocr_content_template.pdf --params tests/params_content_template.json > /dev/null
 if [ -f "$(pwd)/$TEMPORARY_DIRECTORY/changement_climatique_ocr_content_template.pdf" ]; then
     success "passed"
 else
-    error "ocr with template params failed on example/changement_climatique.pdf"
+    error "OCR with template params failed on example/changement_climatique.pdf"
     EXIT_STATUS=1
 fi
 
