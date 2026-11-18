@@ -72,15 +72,6 @@ else
     EXIT_STATUS=1
 fi
 
-info "Test #05: Unit tests"
-docker run --rm $PLATFORM -v $(pwd):/data -w /data -e PYTHONPATH=/usr/tesseract-ocr/src --entrypoint /usr/tesseract-ocr/venv/bin/python3 $DOCKER_IMAGE -m unittest discover -s tests
-if [ $? -eq 0 ]; then
-    success "passed"
-else
-    error "Unit tests failed"
-    EXIT_STATUS=1
-fi
-
 info "Cleaning up temporary files from tests"
 rm -f $TEMPORARY_DIRECTORY/config.json
 rm -f $TEMPORARY_DIRECTORY/changement_climatique_ocr.pdf

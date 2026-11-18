@@ -1,0 +1,23 @@
+[
+    {
+        "title": "Objects",
+        "desc": "Select all image page objects",
+        "name": "object_types",
+        "type": "object",
+        "value": {
+            "template": {
+                "object_update": [
+                    {
+                        "comment": "Select image page objects on all pages",
+                        "query": {
+                            "param": [
+                                "pds_image"
+                            ]
+                        },
+                        "statement": "$if"
+                    }
+                ]
+            }
+        }
+    }
+]
